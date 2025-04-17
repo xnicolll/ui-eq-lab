@@ -1,34 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="lesson-content">
-    <h1>{{ lesson.title }}</h1>
-    <p>{{ lesson.content }}</p>
-    
-    {% if lesson.audio_examples %}
-    <div class="audio-section">
-        <h3>Audio Examples</h3>
-        {% for example in lesson.audio_examples %}
-        <div class="audio-example">
-            <h4>{{ example.title }}</h4>
-            <audio controls class="audio-player">
-                <source src="{{ url_for('static', filename='audio/' + example.file) }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+<div class="learn-container">
+    <div class="learn-step" data-step="1">
+        <div class="learn-content">
+            <p>EQ (Equalization) is the process of adjusting the balance of frequency components within an audio signal.</p>
+            <p>Think of it like shaping the sound.</p>
         </div>
-        {% endfor %}
     </div>
-    {% endif %}
 
-    <div class="navigation-buttons mt-4">
-        {% if lesson_id > 1 %}
-        <a href="/learn/{{ lesson_id - 1 }}" class="btn btn-secondary">Previous</a>
-        {% endif %}
-        {% if lesson_id < 3 %}
-        <a href="/learn/{{ lesson_id + 1 }}" class="btn btn-primary">Next</a>
-        {% else %}
-        <a href="/quiz/1" class="btn btn-primary">Start Quiz</a>
-        {% endif %}
+    <div class="learn-step" data-step="2" style="display: none;">
+        <div class="learn-content">
+            <p>With EQ, you can:</p>
+            <ul>
+                <li>Turn up the bass</li>
+                <li>Soften harsh treble</li>
+                <li>Carve out space in a mix</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="learn-step" data-step="3" style="display: none;">
+        <div class="learn-content">
+            <p>When mixing music, EQ helps instruments and vocals sit well together without clashing.</p>
+            <p class="note">Mixing: the process of balancing, blending, and applying effects to individual audio tracks to create a cohesive sound.</p>
+        </div>
+    </div>
+
+    <div class="learn-step" data-step="4" style="display: none;">
+        <div class="learn-content">
+            <p>The frequency range is split into three main groups:</p>
+            <div class="frequency-groups">
+                <div class="freq-group">Lows</div>
+                <div class="freq-group">Mids</div>
+                <div class="freq-group">Highs</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation-controls">
+        <div class="step-counter">1 / 4</div>
+        <div class="nav-buttons">
+            <button class="nav-btn prev-btn" disabled>Previous</button>
+            <button class="nav-btn next-btn">Next</button>
+        </div>
     </div>
 </div>
 {% endblock %} 
