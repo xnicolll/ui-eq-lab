@@ -228,18 +228,6 @@ p {
     margin: 0 auto;
 }
 
-/* Horizontal connecting line */
-.overview-graphic::before {
-    content: '';
-    position: absolute;
-    top: 100px;
-    left: 200px;
-    right: 200px;
-    height: 1px;
-    background-color: var(--dark);
-    z-index: 0;
-}
-
 .overview-item {
     display: flex;
     flex-direction: column;
