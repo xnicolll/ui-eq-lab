@@ -1,9 +1,41 @@
 {% extends "base.html" %}
 
+{% block header_content %}
+<div class="header-title">EQ Lab</div>
+{% endblock %}
+
 {% block content %}
-<div class="text-center">
-    <h1 class="display-4">Welcome to EQ Lab</h1>
-    <p class="lead">Learn about equalization and how it affects music</p>
-    <a href="/learn/1" class="btn btn-primary btn-lg">Start Learning</a>
+<div class="overview-section">
+    <div class="overview-graphic">
+        <div class="overview-item active">
+            <a href="/learn/1" class="overview-circle">
+                <span>What is EQ?</span>
+            </a>
+            <div class="overview-description">Start here.</div>
+        </div>
+        
+        <div class="overview-item active">
+            <a href="/learn/2" class="overview-circle">
+                <span>Common EQ Techniques</span>
+            </a>
+            <div class="overview-description">High Pass, Low Pass, Scoops.</div>
+        </div>
+        
+        <div class="overview-item disabled">
+            <div class="overview-circle">
+                <span>Song Examples</span>
+            </div>
+            <div class="overview-description"></div>
+        </div>
+        
+        <div class="overview-item disabled">
+            <div class="overview-circle">
+                <span>Quiz</span>
+            </div>
+            <div class="overview-description"></div>
+        </div>
+    </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block navbar %}{% endblock %} 
