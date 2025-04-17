@@ -396,4 +396,89 @@ p {
 .nav-btn:not(:disabled):hover {
     background-color: var(--dark);
     color: var(--light);
+}
+
+/* EQ Graphic */
+.eq-graphic {
+    margin: 4rem auto;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.eq-sliders {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 200px;
+    margin-bottom: 3rem;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.eq-slider {
+    width: 2px;
+    height: 100%;
+    background-color: var(--dark);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider-handle {
+    width: 20px;
+    height: 6px;
+    background-color: var(--dark);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.freq-label {
+    position: absolute;
+    bottom: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: var(--dark);
+    white-space: nowrap;
+}
+
+.freq-ranges {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4rem;
+    position: relative;
+    padding: 0 1rem;
+}
+
+.freq-range {
+    font-size: 0.9rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    position: relative;
+    flex: 1;
+    text-align: center;
+}
+
+.freq-range::before {
+    content: '';
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    width: 1px;
+    height: 1rem;
+    background-color: var(--accent);
+}
+
+.freq-ranges::before {
+    content: '';
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--accent);
 } 
