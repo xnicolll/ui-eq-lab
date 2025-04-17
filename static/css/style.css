@@ -5,6 +5,10 @@
     --light: #fff9e8;
 }
 
+html {
+    background-color: var(--dark);
+}
+
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
