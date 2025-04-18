@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "title": "What is EQ?",
+        "content": "Equalization (EQ) is the process of adjusting the balance between frequency components in an audio signal...",
+        "audio_examples": [
+            {
+                "title": "Example 1",
+                "file": "example1.mp3"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "EQ Techniques",
+        "content": "Learn about different EQ techniques and when to use them...",
+        "audio_examples": [
+            {
+                "title": "Technique 1",
+                "file": "technique1.mp3"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Song Examples",
+        "content": "Practice your EQ skills with these song examples...",
+        "audio_examples": [
+            {
+                "title": "Song 1",
+                "file": "song1.mp3"
+            }
+        ]
+    }
+] 

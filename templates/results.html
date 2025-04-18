@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="results-content">
+    <h1>Quiz Results</h1>
+    <div class="score-summary">
+        <h2>Your Score: <span id="score">0</span>/<span id="total">0</span></h2>
+        <p>Thank you for completing the EQ Lab!</p>
+    </div>
+    
+    <div class="feedback mt-4">
+        <h3>What to do next:</h3>
+        <ul>
+            <li>Review the lessons to improve your understanding</li>
+            <li>Practice with the audio examples</li>
+            <li>Try the quiz again to test your knowledge</li>
+        </ul>
+    </div>
+
+    <div class="navigation-buttons mt-4">
+        <a href="/" class="btn btn-primary">Return to Home</a>
+        <a href="/learn/1" class="btn btn-secondary">Review Lessons</a>
+    </div>
+</div>
+{% endblock %} 

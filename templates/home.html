@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block header_content %}
+<div class="header-title">EQ Lab</div>
+{% endblock %}
+
+{% block content %}
+<div class="overview-section">
+    <div class="overview-graphic">
+        <div class="overview-item active">
+            <a href="/intro" class="overview-circle">
+                <span>What is EQ?</span>
+            </a>
+            <div class="overview-description">Start here.</div>
+        </div>
+        
+        <div class="overview-item active">
+            <a href="/techniques" class="overview-circle">
+                <span>Common EQ Techniques</span>
+            </a>
+            <div class="overview-description">High Pass, Low Pass, Scoops.</div>
+        </div>
+        
+        <div class="overview-item disabled">
+            <div class="overview-circle">
+                <span>Song Examples</span>
+            </div>
+            <div class="overview-description"></div>
+        </div>
+        
+        <div class="overview-item disabled">
+            <div class="overview-circle">
+                <span>Quiz</span>
+            </div>
+            <div class="overview-description"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block navbar %}{% endblock %} 
