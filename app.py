@@ -21,8 +21,20 @@ def home():
     session.clear()  # Reset session when returning to home
     return render_template('home.html')
 
+@app.route('/learn')
+def learn():
+    return render_template('learn.html')
+
+@app.route('/techniques')
+def techniques():
+    return render_template('techniques.html')
+
+@app.route('/quiz')
+def quiz():
+    return render_template('quiz.html')
+
 @app.route('/learn/<int:lesson_id>')
-def learn(lesson_id):
+def learn_specific(lesson_id):
     lessons = load_lesson_data()
     if lesson_id > len(lessons):
         return "Lesson not found", 404
@@ -37,7 +49,7 @@ def learn(lesson_id):
     return render_template('learn.html', lesson=lessons[lesson_id-1], lesson_id=lesson_id)
 
 @app.route('/quiz/<int:question_id>')
-def quiz(question_id):
+def quiz_specific(question_id):
     # Ensure user has completed all lessons
     if not session.get('completed_lesson_3'):
         return redirect(url_for('learn', lesson_id=3))

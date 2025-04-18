@@ -479,4 +479,62 @@ p {
 .nav-btn:not(:disabled):hover {
     background-color: var(--dark);
     color: var(--light);
+}
+
+/* Technique Buttons */
+.technique-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.technique-btn {
+    background: none;
+    border: 1px solid var(--dark);
+    color: var(--dark);
+    padding: 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.technique-btn:hover {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+.learn-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--dark);
+    text-align: center;
+}
+
+.learn-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.learn-content li {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.learn-content li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
 } 

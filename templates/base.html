@@ -23,9 +23,8 @@
                                href="/learn/1">What is EQ?</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.path.startswith('/learn/2') %}active{% endif %}
-                               {% if not session.get('completed_lesson_1') %}disabled{% endif %}" 
-                               href="/learn/2">EQ Techniques</a>
+                            <a class="nav-link {% if request.path == '/techniques' %}active{% endif %}" 
+                               href="/techniques">EQ Techniques</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.path.startswith('/learn/3') %}active{% endif %}
