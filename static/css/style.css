@@ -368,7 +368,7 @@ p {
     height: auto;
 }
 
-.eq-sliders {
+.eq-bars {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -378,24 +378,14 @@ p {
     position: relative;
 }
 
-.eq-slider {
-    width: 2px;
+.eq-bar {
+    width: 30px;
     height: 100%;
     background-color: var(--dark);
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.slider-handle {
-    width: 20px;
-    height: 6px;
-    background-color: var(--dark);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .freq-label {
