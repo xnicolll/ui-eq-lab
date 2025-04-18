@@ -111,6 +111,8 @@ body {
     height: 67vh;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Buttons */
@@ -216,6 +218,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .overview-title {
@@ -235,6 +238,7 @@ p {
     max-width: 1400px;
     padding: 0 2rem;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .overview-item {
@@ -317,17 +321,20 @@ p {
 }
 
 .learn-step {
-    text-align: center;
-    height: calc(100% - 100px); /* Subtract navigation height */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
 }
 
 .learn-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    overflow: hidden;
 }
 
 .learn-content p {
@@ -492,6 +499,7 @@ p {
     max-width: 1400px;
     padding: 0 2rem;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .technique-btn {
@@ -514,11 +522,13 @@ p {
     font-size: 1.3rem;
     line-height: 1.4;
     cursor: pointer;
+    transform-origin: center;
 }
 
 .technique-btn:hover {
     transform: scale(1.1);
     cursor: pointer;
+    z-index: 3;
 }
 
 /* Vertical connecting lines for active items */
