@@ -21,13 +21,17 @@ def home():
     session.clear()  # Reset session when returning to home
     return render_template('home.html')
 
-@app.route('/learn')
-def learn():
-    return render_template('learn.html')
+@app.route('/intro')
+def intro():
+    return render_template('intro.html')
 
 @app.route('/techniques')
 def techniques():
     return render_template('techniques.html')
+
+@app.route('/examples')
+def examples():
+    return render_template('examples.html')
 
 @app.route('/quiz')
 def quiz():
