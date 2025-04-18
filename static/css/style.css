@@ -483,34 +483,54 @@ p {
 
 /* Technique Buttons */
 .technique-buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 3rem;
+    width: 100%;
+    max-width: 1400px;
+    padding: 0 2rem;
     margin: 0 auto;
 }
 
 .technique-btn {
-    background: none;
-    border: 1px solid var(--dark);
-    color: var(--dark);
-    padding: 2rem;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background-color: var(--dark);
+    color: var(--light);
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    aspect-ratio: 1;
+    border: 1px solid var(--dark);
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
     text-align: center;
+    padding: 1.5rem;
+    font-size: 1.3rem;
     line-height: 1.4;
+    cursor: pointer;
 }
 
 .technique-btn:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Vertical connecting lines for active items */
+.technique-btn.active::after {
+    content: '';
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    width: 1px;
+    height: 40px;
     background-color: var(--dark);
-    color: var(--light);
+    z-index: 0;
 }
 
 .learn-content h3 {

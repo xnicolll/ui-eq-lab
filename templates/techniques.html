@@ -1,52 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="learn-container">
-    <div class="learn-step" data-step="1">
-        <div class="learn-content">
-            <div class="technique-buttons">
-                <button class="technique-btn" data-technique="high-pass">High Pass Filters</button>
-                <button class="technique-btn" data-technique="low-pass">Low Pass Filters</button>
-                <button class="technique-btn" data-technique="scooping">Scooping / Boosting</button>
-                <button class="technique-btn" data-technique="space">Making Space</button>
+<div class="content-section">
+    <div class="overview-section">
+        <div class="overview-graphic">
+            <div class="learn-step" data-step="1">
+                <div class="technique-buttons">
+                    <button class="technique-btn" data-technique="high-pass" onclick="navigateToStep(2)">High Pass Filters</button>
+                    <button class="technique-btn" data-technique="low-pass" onclick="navigateToStep(3)">Low Pass Filters</button>
+                    <button class="technique-btn" data-technique="scooping" onclick="navigateToStep(4)">Scooping / Boosting</button>
+                    <button class="technique-btn" data-technique="space" onclick="navigateToStep(5)">Making Space</button>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="learn-step" data-step="2" style="display: none;">
-        <div class="learn-content">
-            <h3>High Pass Filters</h3>
-            <p>A high pass filter removes low frequencies, letting only the highs "pass through."</p>
-            <p>Use it to clean up rumble from vocals or make room for bass instruments.</p>
-        </div>
-    </div>
+            <div class="learn-step" data-step="2" style="display: none;">
+                <div class="learn-content">
+                    <h3>High Pass Filters</h3>
+                    <p>A high pass filter removes low frequencies, letting only the highs "pass through."</p>
+                    <p>Use it to clean up rumble from vocals or make room for bass instruments.</p>
+                </div>
+            </div>
 
-    <div class="learn-step" data-step="3" style="display: none;">
-        <div class="learn-content">
-            <h3>Low Pass Filters</h3>
-            <p>A low pass filter removes high frequencies, letting only the lows "pass through."</p>
-            <p>This technique is common in electronic music to create lo-fi or underwater effects.</p>
-        </div>
-    </div>
+            <div class="learn-step" data-step="3" style="display: none;">
+                <div class="learn-content">
+                    <h3>Low Pass Filters</h3>
+                    <p>A low pass filter removes high frequencies, letting only the lows "pass through."</p>
+                    <p>This technique is common in electronic music to create lo-fi or underwater effects.</p>
+                </div>
+            </div>
 
-    <div class="learn-step" data-step="4" style="display: none;">
-        <div class="learn-content">
-            <h3>Scooping / Boosting</h3>
-            <p>"Scooping" means cutting a narrow frequency range — often used to remove muddiness or harshness.</p>
-            <p>For example, cutting the 300-500Hz range can clear up a mix.</p>
-            <p>Boosting adds energy or presence to certain parts of a sound.</p>
-            <p class="note">Boost with care — it's easy to go overboard.</p>
-        </div>
-    </div>
+            <div class="learn-step" data-step="4" style="display: none;">
+                <div class="learn-content">
+                    <h3>Scooping / Boosting</h3>
+                    <p>"Scooping" means cutting a narrow frequency range — often used to remove muddiness or harshness.</p>
+                    <p>For example, cutting the 300-500Hz range can clear up a mix.</p>
+                    <p>Boosting adds energy or presence to certain parts of a sound.</p>
+                    <p class="note">Boost with care — it's easy to go overboard.</p>
+                </div>
+            </div>
 
-    <div class="learn-step" data-step="5" style="display: none;">
-        <div class="learn-content">
-            <h3>Making Room</h3>
-            <p>In a mix, different instruments compete for the same frequencies. EQ helps give each sound its own space.</p>
-            <ul>
-                <li>Cut lows from piano so it doesn't fight the bass</li>
-                <li>Cut highs from bass to leave room for vocals</li>
-            </ul>
+            <div class="learn-step" data-step="5" style="display: none;">
+                <div class="learn-content">
+                    <h3>Making Room</h3>
+                    <p>In a mix, different instruments compete for the same frequencies. EQ helps give each sound its own space.</p>
+                    <ul>
+                        <li>Cut lows from piano so it doesn't fight the bass</li>
+                        <li>Cut highs from bass to leave room for vocals</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -58,4 +60,26 @@
         </div>
     </div>
 </div>
+
+<script>
+function navigateToStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.learn-step').forEach(step => {
+        step.style.display = 'none';
+    });
+    
+    // Show selected step
+    document.querySelector(`.learn-step[data-step="${step}"]`).style.display = 'block';
+    
+    // Update step counter
+    document.querySelector('.step-counter').textContent = `${step} / 5`;
+    
+    // Update navigation buttons
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    
+    prevBtn.disabled = step === 1;
+    nextBtn.disabled = step === 5;
+}
+</script>
 {% endblock %} 
