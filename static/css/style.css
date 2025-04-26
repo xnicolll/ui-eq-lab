@@ -59,15 +59,31 @@ body {
     transition: none;
 }
 
-.nav-link:hover, .nav-link:focus {
-    background-color: var(--light);
-    color: var(--dark) !important;
-}
-
 .nav-link.disabled {
     color: var(--accent) !important;
     border-color: var(--accent);
     pointer-events: none;
+    opacity: 0.7;
+}
+
+.nav-link:not(.disabled):hover, 
+.nav-link:not(.disabled):focus {
+    background-color: var(--light);
+    color: var(--dark) !important;
+}
+
+.nav-link.disabled:hover, 
+.nav-link.disabled:focus {
+    background-color: transparent;
+    color: var(--accent) !important;
+    cursor: not-allowed;
+}
+
+.nav-link[data-accessible="true"] {
+    color: var(--light) !important;
+    border-color: var(--light);
+    pointer-events: auto;
+    opacity: 1;
 }
 
 /* Equalizer */
