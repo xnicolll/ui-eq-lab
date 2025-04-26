@@ -24,32 +24,44 @@ $(document).ready(function() {
         // Update button states
         $('.prev-btn').prop('disabled', step === 1);
         
-        // Special handling for step 5
+        // Handle next button
+        const nextBtn = $('.next-btn');
         if (step === 5) {
             if (window.location.pathname === '/intro') {
-                $('.next-btn').replaceWith('<a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>');
+                if (!nextBtn.is('a')) {
+                    nextBtn.replaceWith('<a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>');
+                }
             } else if (window.location.pathname === '/techniques') {
-                $('.next-btn').replaceWith('<a href="/examples" class="nav-btn next-btn">Song Examples</a>');
+                if (!nextBtn.is('a')) {
+                    nextBtn.replaceWith('<a href="/examples" class="nav-btn next-btn">Song Examples</a>');
+                }
             }
         } else {
-            if ($('.next-btn').is('a')) {
-                $('.next-btn').replaceWith('<button class="nav-btn next-btn">Next</button>');
+            if (nextBtn.is('a')) {
+                nextBtn.replaceWith('<button class="nav-btn next-btn">Next</button>');
+                // Reattach click handler to the new button
+                $('.next-btn').on('click', handleNext);
             }
             $('.next-btn').prop('disabled', step === totalSteps);
         }
     }
 
-    $('.next-btn').click(function() {
+    function handleNext(e) {
+        if ($(this).is('a')) return; // Don't handle click if it's a link
         if (currentStep < totalSteps) {
             currentStep++;
             updateStep(currentStep);
         }
-    });
+    }
 
-    $('.prev-btn').click(function() {
+    function handlePrev() {
         if (currentStep > 1) {
             currentStep--;
             updateStep(currentStep);
         }
-    });
+    }
+
+    // Initial button setup
+    $('.next-btn').on('click', handleNext);
+    $('.prev-btn').on('click', handlePrev);
 }); 

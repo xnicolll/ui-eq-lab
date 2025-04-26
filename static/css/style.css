@@ -187,20 +187,20 @@ p {
 /* Overview */
 .overview-section {
     text-align: center;
-    height: 100%;
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     overflow: visible;
+    min-height: 100%;
 }
 
 .overview-graphic {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     position: relative;
     gap: 3rem;
     width: 100%;
@@ -306,8 +306,8 @@ p {
 
 /* Navigation */
 .navigation-controls {
-    position: absolute;
-    bottom: 2rem;
+    position: relative;
+    bottom: auto;
     left: 0;
     right: 0;
     display: flex;
@@ -316,6 +316,7 @@ p {
     gap: 0.5rem;
     background-color: var(--light);
     padding: 1rem;
+    margin-top: auto;
 }
 
 .step-counter {
@@ -436,7 +437,7 @@ p {
     padding: 2rem;
     max-width: 800px;
     margin: 0 auto;
-    height: 100%;
+    height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -445,11 +446,12 @@ p {
 
 .learn-step {
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: visible;
+    height: 500px;
+    margin-bottom: 2rem;
 }
 
 .learn-content {
