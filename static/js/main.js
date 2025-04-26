@@ -26,7 +26,11 @@ $(document).ready(function() {
         
         // Special handling for step 5
         if (step === 5) {
-            $('.next-btn').replaceWith('<a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>');
+            if (window.location.pathname === '/intro') {
+                $('.next-btn').replaceWith('<a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>');
+            } else if (window.location.pathname === '/techniques') {
+                $('.next-btn').replaceWith('<a href="/examples" class="nav-btn next-btn">Song Examples</a>');
+            }
         } else {
             if ($('.next-btn').is('a')) {
                 $('.next-btn').replaceWith('<button class="nav-btn next-btn">Next</button>');
