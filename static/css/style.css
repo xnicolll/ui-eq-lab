@@ -114,6 +114,40 @@ body {
     align-items: center;
 }
 
+/* Techniques page specific styles */
+.techniques-page .content-section {
+    height: 67vh;
+    overflow: hidden;
+}
+
+.techniques-page .overview-section {
+    height: 100%;
+    overflow: hidden;
+}
+
+.techniques-page .overview-graphic {
+    height: 100%;
+    overflow: hidden;
+}
+
+.techniques-page .learn-content {
+    height: 100%;
+    overflow: hidden;
+}
+
+.techniques-page .technique-buttons {
+    height: 400px;
+    overflow: hidden;
+}
+
+.techniques-page .navigation-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+}
+
 /* Typography */
 h1, h2, h3, h4 {
     font-family: 'Roboto', sans-serif;
