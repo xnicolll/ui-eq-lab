@@ -20,7 +20,7 @@ def home():
 
 @app.route('/intro')
 def intro():
-    return render_template('intro.html')
+    return render_template('intro.html', current_step=1)
 
 @app.route('/techniques')
 def techniques():
@@ -62,4 +62,4 @@ def results():
     return render_template('results.html')
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True, host='127.0.0.1', port=5000) 
