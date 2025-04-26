@@ -335,6 +335,8 @@ p {
     font-weight: 300;
     cursor: pointer;
     transition: all 0.2s ease;
+    text-decoration: none;
+    color: var(--dark);
 }
 
 .nav-btn:disabled {
@@ -488,9 +490,9 @@ p {
     gap: 3rem;
     width: 100%;
     max-width: 1400px;
-    padding: 0 2rem;
+    padding: 2rem;
     margin: 0 auto;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .technique-btn {
@@ -507,7 +509,7 @@ p {
     text-decoration: none;
     transition: transform 0.3s ease;
     position: relative;
-    z-index: 2;
+    z-index: 1;
     text-align: center;
     padding: 1.5rem;
     font-family: 'Roboto', sans-serif;
@@ -520,8 +522,7 @@ p {
 
 .technique-btn:hover {
     transform: scale(1.1);
-    cursor: pointer;
-    z-index: 3;
+    z-index: 2;
 }
 
 /* Vertical connecting lines for active items */

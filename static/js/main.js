@@ -23,7 +23,16 @@ $(document).ready(function() {
         
         // Update button states
         $('.prev-btn').prop('disabled', step === 1);
-        $('.next-btn').prop('disabled', step === totalSteps);
+        
+        // Special handling for step 5
+        if (step === 5) {
+            $('.next-btn').replaceWith('<a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>');
+        } else {
+            if ($('.next-btn').is('a')) {
+                $('.next-btn').replaceWith('<button class="nav-btn next-btn">Next</button>');
+            }
+            $('.next-btn').prop('disabled', step === totalSteps);
+        }
     }
 
     $('.next-btn').click(function() {

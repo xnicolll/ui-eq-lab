@@ -69,7 +69,11 @@
         <div class="step-counter">1 / 5</div>
         <div class="nav-buttons">
             <button class="nav-btn prev-btn" disabled>Previous</button>
+            {% if current_step == 5 %}
+            <a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>
+            {% else %}
             <button class="nav-btn next-btn">Next</button>
+            {% endif %}
         </div>
     </div>
 </div>
