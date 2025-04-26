@@ -104,41 +104,44 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize audio context
     function initAudioContext() {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            gainNode = audioContext.createGain();
-            
-            // Create high and low pass filters
-            highPassFilter = audioContext.createBiquadFilter();
-            highPassFilter.type = 'highpass';
-            highPassFilter.frequency.value = 20;
-            highPassFilter.Q.value = 1;
-            
-            lowPassFilter = audioContext.createBiquadFilter();
-            lowPassFilter.type = 'lowpass';
-            lowPassFilter.frequency.value = 20000;
-            lowPassFilter.Q.value = 1;
-            
-            // Create EQ filters
-            const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
-            frequencies.forEach(freq => {
-                const filter = audioContext.createBiquadFilter();
-                filter.type = 'peaking';
-                filter.frequency.value = freq;
-                filter.Q.value = 1;
-                filter.gain.value = 0;
-                filters.push(filter);
-            });
-            
-            // Connect all filters in series
-            highPassFilter.connect(lowPassFilter);
-            filters.reduce((prev, curr) => {
-                prev.connect(curr);
-                return curr;
-            }, lowPassFilter).connect(gainNode);
-            
-            gainNode.connect(audioContext.destination);
+        if (audioContext) {
+            audioContext.close();
         }
+        
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        gainNode = audioContext.createGain();
+        
+        // Create high and low pass filters
+        highPassFilter = audioContext.createBiquadFilter();
+        highPassFilter.type = 'highpass';
+        highPassFilter.frequency.value = 20;
+        highPassFilter.Q.value = 1;
+        
+        lowPassFilter = audioContext.createBiquadFilter();
+        lowPassFilter.type = 'lowpass';
+        lowPassFilter.frequency.value = 20000;
+        lowPassFilter.Q.value = 1;
+        
+        // Create EQ filters
+        const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
+        filters = [];
+        frequencies.forEach(freq => {
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'peaking';
+            filter.frequency.value = freq;
+            filter.Q.value = 1;
+            filter.gain.value = 0;
+            filters.push(filter);
+        });
+        
+        // Connect all filters in series
+        highPassFilter.connect(lowPassFilter);
+        filters.reduce((prev, curr) => {
+            prev.connect(curr);
+            return curr;
+        }, lowPassFilter).connect(gainNode);
+        
+        gainNode.connect(audioContext.destination);
     }
     
     // Handle file upload
@@ -150,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Initialize audio context on first play
             audioPlayer.addEventListener('play', function() {
-                if (!audioContext) {
+                if (!audioContext || audioContext.state === 'closed') {
                     initAudioContext();
                 }
                 
