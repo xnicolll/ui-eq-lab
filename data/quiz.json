@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "question": "What is the purpose of EQ in audio processing?",
+        "options": [
+            "To adjust volume levels",
+            "To balance frequency components",
+            "To add reverb effects",
+            "To compress audio"
+        ],
+        "correct_answer": 1
+    },
+    {
+        "id": 2,
+        "question": "Which frequency range is typically associated with bass?",
+        "options": [
+            "20Hz - 250Hz",
+            "250Hz - 2kHz",
+            "2kHz - 4kHz",
+            "4kHz - 20kHz"
+        ],
+        "correct_answer": 0
+    }
+] 
