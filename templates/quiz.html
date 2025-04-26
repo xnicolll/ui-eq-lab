@@ -13,7 +13,7 @@
 
         <div class="quiz-content">
             <div class="question" data-question="1">
-                <p>What is the primary purpose of EQ in audio processing?</p>
+                <p>Placeholder - What is the primary purpose of EQ in audio processing?</p>
                 <div class="options">
                     <label class="option">
                         <input type="radio" name="q1" value="a">
@@ -189,7 +189,7 @@ $(document).ready(function() {
     });
 
     // Handle next button click
-    $(document).on('click', '.next-btn', function() {
+    $('.next-btn').on('click', function() {
         if (currentQuestion < totalQuestions) {
             currentQuestion++;
             updateQuestion();
@@ -201,7 +201,7 @@ $(document).ready(function() {
     });
 
     // Handle previous button click
-    $(document).on('click', '.prev-btn', function() {
+    $('.prev-btn').on('click', function() {
         if (currentQuestion > 1) {
             currentQuestion--;
             updateQuestion();
