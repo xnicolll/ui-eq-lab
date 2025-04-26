@@ -258,7 +258,7 @@ p {
 .overview-graphic {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     position: relative;
     gap: 4rem;
     width: 100%;
@@ -279,8 +279,16 @@ p {
     margin: 0;
 }
 
-.overview-item:nth-child(1),
+.overview-item:nth-child(1) {
+    margin-top: 2rem;
+}
+
 .overview-item:nth-child(2) {
+    margin-top: 2rem;
+}
+
+.overview-item:nth-child(3),
+.overview-item:nth-child(4) {
     margin-top: 2rem;
 }
 
