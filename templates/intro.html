@@ -1,79 +1,81 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="learn-container">
-    <div class="learn-step" data-step="1">
-        <div class="learn-content">
-            <p>EQ (Equalization) is the process of adjusting the balance of frequency components within an audio signal.</p>
-            <p>Think of it like shaping the sound.</p>
-        </div>
-    </div>
-
-    <div class="learn-step" data-step="2" style="display: none;">
-        <div class="learn-content">
-            <p>With EQ, you can:</p>
-            <ul>
-                <li>Turn up the bass</li>
-                <li>Soften harsh treble</li>
-                <li>Carve out space in a mix</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="learn-step" data-step="3" style="display: none;">
-        <div class="learn-content">
-            <p>When mixing music, EQ helps instruments and vocals sit well together without clashing.</p>
-            <p class="note">Mixing: the process of balancing, blending, and applying effects to individual audio tracks to create a cohesive sound.</p>
-        </div>
-    </div>
-
-    <div class="learn-step" data-step="4" style="display: none;">
-        <div class="learn-content">
-            <p>The frequency range is split into three main groups:</p>
-            <div class="frequency-groups">
-                <div class="freq-group">Lows</div>
-                <div class="freq-group">Mids</div>
-                <div class="freq-group">Highs</div>
+<div class="content-section intro-page">
+    <div class="learn-container">
+        <div class="learn-step" data-step="1">
+            <div class="learn-content">
+                <p>EQ (Equalization) is the process of adjusting the balance of frequency components within an audio signal.</p>
+                <p>Think of it like shaping the sound.</p>
             </div>
         </div>
-    </div>
 
-    <div class="learn-step" data-step="5" style="display: none;">
-        <div class="learn-content">
-            <p>Frequency Range Overview:</p>
-            <div class="eq-graphic">
-                <div class="eq-bars">
-                    <div class="eq-bar">
-                        <div class="freq-label">0Hz</div>
-                    </div>
-                    <div class="eq-bar">
-                        <div class="freq-label">250Hz</div>
-                    </div>
-                    <div class="eq-bar">
-                        <div class="freq-label">2kHz</div>
-                    </div>
-                    <div class="eq-bar">
-                        <div class="freq-label">20kHz</div>
-                    </div>
-                </div>
-                <div class="freq-ranges">
-                    <div class="freq-range low">Low Frequency</div>
-                    <div class="freq-range mid">Mid Frequency</div>
-                    <div class="freq-range high">High Frequency</div>
+        <div class="learn-step" data-step="2" style="display: none;">
+            <div class="learn-content">
+                <p>With EQ, you can:</p>
+                <ul>
+                    <li>Turn up the bass</li>
+                    <li>Soften harsh treble</li>
+                    <li>Carve out space in a mix</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="learn-step" data-step="3" style="display: none;">
+            <div class="learn-content">
+                <p>When mixing music, EQ helps instruments and vocals sit well together without clashing.</p>
+                <p class="note">Mixing: the process of balancing, blending, and applying effects to individual audio tracks to create a cohesive sound.</p>
+            </div>
+        </div>
+
+        <div class="learn-step" data-step="4" style="display: none;">
+            <div class="learn-content">
+                <p>The frequency range is split into three main groups:</p>
+                <div class="frequency-groups">
+                    <div class="freq-group">Lows</div>
+                    <div class="freq-group">Mids</div>
+                    <div class="freq-group">Highs</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="navigation-controls">
-        <div class="step-counter">1 / 5</div>
-        <div class="nav-buttons">
-            <button class="nav-btn prev-btn" disabled>Previous</button>
-            {% if current_step == 5 %}
-            <a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>
-            {% else %}
-            <button class="nav-btn next-btn">Next</button>
-            {% endif %}
+        <div class="learn-step" data-step="5" style="display: none;">
+            <div class="learn-content">
+                <p>Frequency Range Overview:</p>
+                <div class="eq-graphic">
+                    <div class="eq-bars">
+                        <div class="eq-bar">
+                            <div class="freq-label">0Hz</div>
+                        </div>
+                        <div class="eq-bar">
+                            <div class="freq-label">250Hz</div>
+                        </div>
+                        <div class="eq-bar">
+                            <div class="freq-label">2kHz</div>
+                        </div>
+                        <div class="eq-bar">
+                            <div class="freq-label">20kHz</div>
+                        </div>
+                    </div>
+                    <div class="freq-ranges">
+                        <div class="freq-range low">Low Frequency</div>
+                        <div class="freq-range mid">Mid Frequency</div>
+                        <div class="freq-range high">High Frequency</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-controls">
+            <div class="step-counter">1 / 5</div>
+            <div class="nav-buttons">
+                <button class="nav-btn prev-btn" disabled>Previous</button>
+                {% if current_step == 5 %}
+                <a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>
+                {% else %}
+                <button class="nav-btn next-btn">Next</button>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
