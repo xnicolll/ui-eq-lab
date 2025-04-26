@@ -69,6 +69,19 @@
                         <button class="preset-btn" data-preset="treble-boost">Treble Boost</button>
                         <button class="preset-btn" data-preset="vocal">Vocal</button>
                     </div>
+
+                    <div class="pass-filters">
+                        <div class="pass-filter">
+                            <label>High Pass Filter</label>
+                            <input type="range" id="high-pass" min="20" max="1000" value="20" step="1">
+                            <span class="frequency-value">20 Hz</span>
+                        </div>
+                        <div class="pass-filter">
+                            <label>Low Pass Filter</label>
+                            <input type="range" id="low-pass" min="1000" max="20000" value="20000" step="1">
+                            <span class="frequency-value">20 kHz</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,21 +94,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('audio-file');
     const eqControls = document.querySelectorAll('.eq-control');
     const presetButtons = document.querySelectorAll('.preset-btn');
+    const highPassSlider = document.getElementById('high-pass');
+    const lowPassSlider = document.getElementById('low-pass');
     
     // Audio context and nodes
     let audioContext;
     let source;
     let gainNode;
     let filters = [];
+    let highPassFilter;
+    let lowPassFilter;
     
     // Initialize audio context
     function initAudioContext() {
         if (!audioContext) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             gainNode = audioContext.createGain();
-            gainNode.connect(audioContext.destination);
             
-            // Create filters for each frequency band
+            // Create high and low pass filters
+            highPassFilter = audioContext.createBiquadFilter();
+            highPassFilter.type = 'highpass';
+            highPassFilter.frequency.value = 20;
+            highPassFilter.Q.value = 1;
+            
+            lowPassFilter = audioContext.createBiquadFilter();
+            lowPassFilter.type = 'lowpass';
+            lowPassFilter.frequency.value = 20000;
+            lowPassFilter.Q.value = 1;
+            
+            // Create EQ filters
             const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
             frequencies.forEach(freq => {
                 const filter = audioContext.createBiquadFilter();
@@ -106,11 +133,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 filters.push(filter);
             });
             
-            // Connect filters in series
+            // Connect all filters in series
+            highPassFilter.connect(lowPassFilter);
             filters.reduce((prev, curr) => {
                 prev.connect(curr);
                 return curr;
-            }).connect(gainNode);
+            }, lowPassFilter).connect(gainNode);
+            
+            gainNode.connect(audioContext.destination);
         }
     }
     
@@ -132,9 +162,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     source.disconnect();
                 }
                 source = audioContext.createMediaElementSource(audioPlayer);
-                source.connect(filters[0]);
+                source.connect(highPassFilter);
             }, { once: true });
         }
+    });
+
+    // Handle high pass filter changes
+    highPassSlider.addEventListener('input', function() {
+        const freq = parseInt(this.value);
+        if (highPassFilter) {
+            highPassFilter.frequency.value = freq;
+        }
+        this.nextElementSibling.textContent = `${freq} Hz`;
+    });
+
+    // Handle low pass filter changes
+    lowPassSlider.addEventListener('input', function() {
+        const freq = parseInt(this.value);
+        if (lowPassFilter) {
+            lowPassFilter.frequency.value = freq;
+        }
+        this.nextElementSibling.textContent = `${freq} Hz`;
     });
 
     // EQ presets
