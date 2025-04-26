@@ -560,4 +560,102 @@ p {
     font-weight: 300;
     font-size: 1.1rem;
     margin: 0.5rem 0;
+}
+
+/* EQ Board */
+.eq-board {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.audio-upload {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--dark);
+    color: var(--light);
+    border: 1px solid var(--dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-label:hover {
+    background-color: var(--light);
+    color: var(--dark);
+}
+
+.audio-player-container {
+    margin: 1.5rem 0;
+}
+
+.audio-player-container audio {
+    width: 100%;
+}
+
+.eq-controls {
+    margin: 2rem 0;
+}
+
+.eq-sliders {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 200px;
+    padding: 0 1rem;
+}
+
+.eq-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+}
+
+.eq-control {
+    -webkit-appearance: slider-vertical;
+    width: 8px;
+    height: 150px;
+    margin: 0;
+    transform: rotate(180deg);
+}
+
+.eq-slider label {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--dark);
+}
+
+.eq-presets {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.preset-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--dark);
+    color: var(--light);
+    border: 1px solid var(--dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+.preset-btn:hover {
+    background-color: var(--light);
+    color: var(--dark);
 } 

@@ -5,10 +5,166 @@
     <div class="overview-section">
         <div class="overview-graphic">
             <div class="learn-content">
-                <h3>Song Examples</h3>
-                <p>Coming soon...</p>
+                <h3>Interactive EQ Board</h3>
+                <p>Upload a song and experiment with different EQ settings.</p>
+                
+                <div class="eq-board">
+                    <div class="audio-upload">
+                        <input type="file" id="audio-file" accept="audio/*" class="file-input">
+                        <label for="audio-file" class="file-label">Choose Audio File</label>
+                    </div>
+
+                    <div class="audio-player-container">
+                        <audio id="audio-player" controls></audio>
+                    </div>
+
+                    <div class="eq-controls">
+                        <div class="eq-sliders">
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="60" min="-12" max="12" value="0" step="0.1">
+                                <label>60 Hz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="170" min="-12" max="12" value="0" step="0.1">
+                                <label>170 Hz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="310" min="-12" max="12" value="0" step="0.1">
+                                <label>310 Hz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="600" min="-12" max="12" value="0" step="0.1">
+                                <label>600 Hz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="1000" min="-12" max="12" value="0" step="0.1">
+                                <label>1 kHz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="3000" min="-12" max="12" value="0" step="0.1">
+                                <label>3 kHz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="6000" min="-12" max="12" value="0" step="0.1">
+                                <label>6 kHz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="12000" min="-12" max="12" value="0" step="0.1">
+                                <label>12 kHz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="14000" min="-12" max="12" value="0" step="0.1">
+                                <label>14 kHz</label>
+                            </div>
+                            <div class="eq-slider">
+                                <input type="range" class="eq-control" data-frequency="16000" min="-12" max="12" value="0" step="0.1">
+                                <label>16 kHz</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eq-presets">
+                        <button class="preset-btn" data-preset="flat">Flat</button>
+                        <button class="preset-btn" data-preset="bass-boost">Bass Boost</button>
+                        <button class="preset-btn" data-preset="treble-boost">Treble Boost</button>
+                        <button class="preset-btn" data-preset="vocal">Vocal</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const audioPlayer = document.getElementById('audio-player');
+    const fileInput = document.getElementById('audio-file');
+    const eqControls = document.querySelectorAll('.eq-control');
+    const presetButtons = document.querySelectorAll('.preset-btn');
+    
+    // Audio context and nodes
+    let audioContext;
+    let source;
+    let gainNode;
+    let filters = [];
+    
+    // Initialize audio context
+    function initAudioContext() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            gainNode = audioContext.createGain();
+            gainNode.connect(audioContext.destination);
+            
+            // Create filters for each frequency band
+            const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
+            frequencies.forEach(freq => {
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'peaking';
+                filter.frequency.value = freq;
+                filter.Q.value = 1;
+                filter.gain.value = 0;
+                filters.push(filter);
+            });
+            
+            // Connect filters in series
+            filters.reduce((prev, curr) => {
+                prev.connect(curr);
+                return curr;
+            }).connect(gainNode);
+        }
+    }
+    
+    // Handle file upload
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            audioPlayer.src = url;
+            
+            // Initialize audio context on first play
+            audioPlayer.addEventListener('play', function() {
+                if (!audioContext) {
+                    initAudioContext();
+                }
+                
+                // Create new source node
+                if (source) {
+                    source.disconnect();
+                }
+                source = audioContext.createMediaElementSource(audioPlayer);
+                source.connect(filters[0]);
+            }, { once: true });
+        }
+    });
+
+    // EQ presets
+    const presets = {
+        flat: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'bass-boost': [6, 4, 2, 0, 0, 0, 0, 0, 0, 0],
+        'treble-boost': [0, 0, 0, 0, 0, 0, 2, 4, 6, 6],
+        vocal: [0, 0, 2, 4, 6, 4, 2, 0, 0, 0]
+    };
+
+    // Apply preset
+    presetButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const preset = presets[this.dataset.preset];
+            eqControls.forEach((control, index) => {
+                control.value = preset[index];
+                control.dispatchEvent(new Event('input'));
+            });
+        });
+    });
+
+    // Handle EQ changes
+    eqControls.forEach((control, index) => {
+        control.addEventListener('input', function() {
+            const gain = parseFloat(this.value);
+            if (filters[index]) {
+                filters[index].gain.value = gain;
+            }
+        });
+    });
+});
+</script>
 {% endblock %} 
