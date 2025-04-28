@@ -147,8 +147,8 @@ body {
 }
 
 .techniques-page .learn-content {
-    height: 100%;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
 }
 
 .techniques-page .technique-buttons {
@@ -920,4 +920,52 @@ input[type="range"]::-moz-range-track {
 #confirm-exit {
     background-color: var(--dark);
     color: var(--light);
+}
+
+.technique-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    display: block;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    overflow: visible;
+}
+
+.image-container .technique-image {
+    width: 300px;
+    height: 200px;
+    object-fit: contain;
+    margin: 0;
+}
+
+.image-with-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    margin-bottom: 20px;
+    overflow: visible;
+}
+
+.image-caption {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+    padding: 5px;
+    background-color: var(--light);
+    position: relative;
+    z-index: 1;
 } 
