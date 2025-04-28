@@ -1017,4 +1017,96 @@ input[type="range"]::-moz-range-track {
 .upload-container {
     display: inline-block;
     margin: 0 auto;
+}
+
+.audio-comparison {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 2rem 0;
+    gap: 4rem;
+}
+
+.audio-section {
+    text-align: center;
+}
+
+.audio-section h4 {
+    margin-bottom: 1rem;
+    color: var(--dark);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+.play-button {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: var(--dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.play-button:hover {
+    transform: scale(1.05);
+}
+
+.play-icon {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 25px 0 25px 40px;
+    border-color: transparent transparent transparent var(--light);
+    margin-left: 10px;
+}
+
+.play-button.playing .play-icon {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--light);
+    margin: 0;
+}
+
+.quiz-header h3 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--dark);
+    font-size: 1.5rem;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--dark);
+    transition: all 0.2s ease;
+}
+
+.option:hover {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+.option input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+.navigation-controls {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
 } 

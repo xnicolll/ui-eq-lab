@@ -32,7 +32,9 @@ def examples():
 
 @app.route('/quiz')
 def quiz():
-    return render_template('quiz.html')
+    if not session.get('completed_lesson_3'):
+        return redirect(url_for('learn_specific', lesson_id=3))
+    return redirect(url_for('quiz_specific', question_id=1))
 
 @app.route('/learn/<int:lesson_id>')
 def learn_specific(lesson_id):
@@ -41,7 +43,7 @@ def learn_specific(lesson_id):
         return "Lesson not found", 404
     
     if lesson_id > 1 and not session.get(f'completed_lesson_{lesson_id-1}'):
-        return redirect(url_for('learn', lesson_id=lesson_id-1))
+        return redirect(url_for('learn_specific', lesson_id=lesson_id-1))
     
     session[f'completed_lesson_{lesson_id}'] = True
     return render_template('learn.html', lesson=lessons[lesson_id-1], lesson_id=lesson_id)
@@ -49,7 +51,7 @@ def learn_specific(lesson_id):
 @app.route('/quiz/<int:question_id>')
 def quiz_specific(question_id):
     if not session.get('completed_lesson_3'):
-        return redirect(url_for('learn', lesson_id=3))
+        return redirect(url_for('learn_specific', lesson_id=3))
     
     quiz_data = load_quiz_data()
     if question_id > len(quiz_data):

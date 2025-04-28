@@ -4,228 +4,209 @@
 <div class="content-section quiz-page">
     <div class="quiz-container">
         <div class="quiz-header">
-            <h3>EQ Quiz</h3>
-            <div class="quiz-progress">
-                <span class="current-question">Question 1</span>
-                <span class="quiz-score" style="display: none;">Score: <span id="score">0</span>/5</span>
-            </div>
+            <h3>{{ question.question }}</h3>
         </div>
 
         <div class="quiz-content">
-            <div class="question" data-question="1">
-                <p>Placeholder - What is the primary purpose of EQ in audio processing?</p>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q1" value="a">
-                        <span>To adjust volume levels</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q1" value="b">
-                        <span>To balance frequency components</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q1" value="c">
-                        <span>To add reverb effects</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q1" value="d">
-                        <span>To compress audio</span>
-                    </label>
+            <div class="audio-comparison">
+                <div class="audio-section">
+                    <h4>Before</h4>
+                    <div class="play-button" data-audio="{{ question.audio.before }}">
+                        <div class="play-icon"></div>
+                    </div>
+                </div>
+
+                <div class="audio-section">
+                    <h4>Processed</h4>
+                    <div class="play-button" data-audio="{{ question.audio.after }}">
+                        <div class="play-icon"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="question" data-question="2" style="display: none;">
-                <p>Which frequency range is typically associated with bass?</p>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q2" value="a">
-                        <span>20Hz - 250Hz</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q2" value="b">
-                        <span>250Hz - 2kHz</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q2" value="c">
-                        <span>2kHz - 4kHz</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q2" value="d">
-                        <span>4kHz - 20kHz</span>
-                    </label>
-                </div>
+            <div class="options">
+                {% for option in question.options %}
+                <label class="option">
+                    <input type="radio" name="q{{ question.id }}" value="{{ option.lower().replace(' ', '-') }}">
+                    <span>{{ option }}</span>
+                </label>
+                {% endfor %}
             </div>
 
-            <div class="question" data-question="3" style="display: none;">
-                <p>What is the purpose of a high-pass filter?</p>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q3" value="a">
-                        <span>To boost high frequencies</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q3" value="b">
-                        <span>To remove low frequencies</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q3" value="c">
-                        <span>To balance mid frequencies</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q3" value="d">
-                        <span>To add warmth to the sound</span>
-                    </label>
-                </div>
+            <div class="navigation-controls">
+                {% if question.id > 1 %}
+                <a href="{{ url_for('quiz_specific', question_id=question.id-1) }}" class="nav-btn prev-btn">Previous</a>
+                {% endif %}
+                <button class="nav-btn next-btn" disabled>Next</button>
             </div>
-
-            <div class="question" data-question="4" style="display: none;">
-                <p>What is "scooping" in EQ?</p>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q4" value="a">
-                        <span>Boosting all frequencies</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q4" value="b">
-                        <span>Cutting a narrow frequency range</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q4" value="c">
-                        <span>Adding reverb to the mix</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q4" value="d">
-                        <span>Compressing the audio</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question" data-question="5" style="display: none;">
-                <p>Why is EQ important in mixing?</p>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q5" value="a">
-                        <span>To make everything louder</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q5" value="b">
-                        <span>To give each instrument its own space</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q5" value="c">
-                        <span>To add effects to the mix</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q5" value="d">
-                        <span>To make the mix mono</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="quiz-navigation">
-            <button class="nav-btn prev-btn" disabled>Previous</button>
-            <button class="nav-btn next-btn">Next</button>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="exit-confirm" style="display: none;">
-    <div class="modal-content">
-        <h3>Are you sure?</h3>
-        <p>Are you sure you want to return to learning? You will lose your progress in the Quiz if you do.</p>
-        <div class="modal-buttons">
-            <button class="nav-btn" id="cancel-exit">Cancel</button>
-            <button class="nav-btn" id="confirm-exit">Return to Learning</button>
         </div>
     </div>
 </div>
 
 <script>
-$(document).ready(function() {
-    let currentQuestion = 1;
-    let score = 0;
-    const totalQuestions = 5;
-    const answers = {
-        1: 'b', // To balance frequency components
-        2: 'a', // 20Hz - 250Hz
-        3: 'b', // To remove low frequencies
-        4: 'b', // Cutting a narrow frequency range
-        5: 'b'  // To give each instrument its own space
-    };
+document.addEventListener('DOMContentLoaded', function() {
+    const playButtons = document.querySelectorAll('.play-button');
+    let currentAudio = null;
 
-    function updateQuestion() {
-        $('.question').hide();
-        $(`.question[data-question="${currentQuestion}"]`).show();
-        $('.current-question').text(`Question ${currentQuestion}`);
+    // Handle play button clicks
+    playButtons.forEach(button => {
+        const audioUrl = button.dataset.audio;
+        const audio = new Audio(audioUrl);
         
-        // Update button states
-        $('.prev-btn').prop('disabled', currentQuestion === 1);
-        $('.next-btn').text(currentQuestion === totalQuestions ? 'Finish' : 'Next');
-        
-        // Check if current question is answered
-        const currentAnswer = $(`input[name="q${currentQuestion}"]:checked`).val();
-        $('.next-btn').prop('disabled', !currentAnswer);
-    }
-
-    function updateScore() {
-        score = 0;
-        for (let i = 1; i <= totalQuestions; i++) {
-            const selectedAnswer = $(`input[name="q${i}"]:checked`).val();
-            if (selectedAnswer === answers[i]) {
-                score++;
+        button.addEventListener('click', function() {
+            if (currentAudio && currentAudio !== audio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio.playButton.classList.remove('playing');
             }
-        }
-        $('#score').text(score);
-        $('.quiz-score').show();
-    }
+            
+            if (audio.paused) {
+                audio.play();
+                button.classList.add('playing');
+                currentAudio = audio;
+                currentAudio.playButton = button;
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                button.classList.remove('playing');
+                currentAudio = null;
+            }
+        });
 
-    // Handle option selection
-    $('.option input[type="radio"]').on('change', function() {
-        const questionNumber = $(this).attr('name').replace('q', '');
-        if (questionNumber == currentQuestion) {
-            $('.next-btn').prop('disabled', false);
-        }
+        // Add ended event listener
+        audio.addEventListener('ended', function() {
+            button.classList.remove('playing');
+            currentAudio = null;
+        });
     });
 
-    // Handle next button click
-    $('.next-btn').on('click', function() {
-        if (currentQuestion < totalQuestions) {
-            currentQuestion++;
-            updateQuestion();
+    // Handle answer selection
+    const options = document.querySelectorAll('.option input');
+    const nextButton = document.querySelector('.next-btn');
+    
+    options.forEach(option => {
+        option.addEventListener('change', function() {
+            nextButton.disabled = false;
+        });
+    });
+
+    // Handle navigation
+    nextButton.addEventListener('click', function() {
+        const selectedAnswer = document.querySelector(`input[name="q{{ question.id }}"]:checked`);
+        if (selectedAnswer && selectedAnswer.value === '{{ question.correct_answer }}') {
+            // Correct answer
+            window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
         } else {
-            // Handle quiz completion
-            updateScore();
-            window.location.href = '/results';
+            // Wrong answer
+            alert('Try again!');
         }
     });
-
-    // Handle previous button click
-    $('.prev-btn').on('click', function() {
-        if (currentQuestion > 1) {
-            currentQuestion--;
-            updateQuestion();
-        }
-    });
-
-    // Handle navigation away from quiz
-    $('.nav-link').click(function(e) {
-        if (window.location.pathname === '/quiz') {
-            e.preventDefault();
-            $('#exit-confirm').show();
-        }
-    });
-
-    $('#cancel-exit').click(function() {
-        $('#exit-confirm').hide();
-    });
-
-    $('#confirm-exit').click(function() {
-        window.location.href = '/';
-    });
-
-    // Initialize
-    updateQuestion();
 });
 </script>
-{% endblock %} 
+{% endblock %}
+
+<!-- Question 2 Template -->
+{% if question_number == 2 %}
+<div class="content-section quiz-page">
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h3>What technique has been applied?</h3>
+        </div>
+
+        <div class="quiz-content">
+            <div class="audio-comparison">
+                <div class="audio-section">
+                    <h4>Before</h4>
+                    <div class="play-button" data-audio="/static/audio/tylerthecreator_normal.mp3">
+                        <div class="play-icon"></div>
+                    </div>
+                </div>
+
+                <div class="audio-section">
+                    <h4>Processed</h4>
+                    <div class="play-button" data-audio="/static/audio/tylerthecreator_hipass.mp3">
+                        <div class="play-icon"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q2" value="high-pass">
+                    <span>High Pass</span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="low-pass">
+                    <span>Low Pass</span>
+                </label>
+            </div>
+
+            <div class="navigation-controls">
+                <button class="nav-btn prev-btn">Previous</button>
+                <button class="nav-btn next-btn">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const playButtons = document.querySelectorAll('.play-button');
+    let currentAudio = null;
+
+    // Handle play button clicks
+    playButtons.forEach(button => {
+        const audioUrl = button.dataset.audio;
+        const audio = new Audio(audioUrl);
+        
+        button.addEventListener('click', function() {
+            if (currentAudio && currentAudio !== audio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio.playButton.classList.remove('playing');
+            }
+            
+            if (audio.paused) {
+                audio.play();
+                button.classList.add('playing');
+                currentAudio = audio;
+                currentAudio.playButton = button;
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                button.classList.remove('playing');
+                currentAudio = null;
+            }
+        });
+
+        // Add ended event listener
+        audio.addEventListener('ended', function() {
+            button.classList.remove('playing');
+            currentAudio = null;
+        });
+    });
+
+    // Handle answer selection
+    const options = document.querySelectorAll('.option input');
+    const nextButton = document.querySelector('.next-btn');
+    
+    options.forEach(option => {
+        option.addEventListener('change', function() {
+            nextButton.disabled = false;
+        });
+    });
+
+    // Handle navigation
+    nextButton.addEventListener('click', function() {
+        const selectedAnswer = document.querySelector('input[name="q2"]:checked');
+        if (selectedAnswer && selectedAnswer.value === 'high-pass') {
+            // Correct answer
+            window.location.href = '/quiz/3';  // Navigate to next question
+        } else {
+            // Wrong answer
+            alert('Try again!');
+        }
+    });
+});
+</script>
+{% endif %} 
