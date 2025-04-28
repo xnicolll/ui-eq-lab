@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 value: parseFloat(slider.value)
             }));
             
-            // Check if the values create a low pass filter at 1000 Hz
+            // Check if the values create a low pass filter at 1000 Hz and store result
             const isCorrect = sliderValues.every(slider => {
                 if (slider.frequency > 1000) {
                     return slider.value <= {{ question.correct_threshold }};
@@ -112,11 +112,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             });
             
-            if (isCorrect) {
+            // Store the answer
+            fetch('/store_answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    question_id: {{ question.id }},
+                    is_correct: isCorrect
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Answer stored:', data);
+                {% if question.id == 5 %}
+                window.location.href = '{{ url_for("results") }}';
+                {% else %}
                 window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
-            } else {
-                alert('Try again! Remember, a low pass filter should cut off frequencies above 1000 Hz.');
-            }
+                {% endif %}
+            })
+            .catch(error => console.error('Error:', error));
         });
     {% else %}
         const playButtons = document.querySelectorAll('.play-button');
@@ -166,10 +182,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle navigation for multiple choice
         nextButton.addEventListener('click', function() {
             const selectedAnswer = document.querySelector(`input[name="q{{ question.id }}"]:checked`);
-            if (selectedAnswer && selectedAnswer.value === '{{ question.correct_answer }}') {
-                window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
-            } else {
-                alert('Try again!');
+            if (selectedAnswer) {
+                // Store the answer
+                fetch('/store_answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question_id: {{ question.id }},
+                        is_correct: selectedAnswer.value === '{{ question.correct_answer }}'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Answer stored:', data);
+                    {% if question.id == 5 %}
+                    window.location.href = '{{ url_for("results") }}';
+                    {% else %}
+                    window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
+                    {% endif %}
+                })
+                .catch(error => console.error('Error:', error));
             }
         });
     {% endif %}
