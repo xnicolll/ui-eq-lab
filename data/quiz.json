@@ -37,5 +37,18 @@
             "Cut"
         ],
         "correct_answer": "boost"
+    },
+    {
+        "id": 4,
+        "question": "What has been boosted?",
+        "audio": {
+            "before": "/static/audio/tylerthecreator_normal.mp3",
+            "after": "/static/audio/tylerthecreator_trebleboosted.mp3"
+        },
+        "options": [
+            "Treble",
+            "Bass"
+        ],
+        "correct_answer": "treble"
     }
 ] 
