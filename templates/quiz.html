@@ -8,99 +8,171 @@
         </div>
 
         <div class="quiz-content">
-            <div class="audio-comparison">
-                <div class="audio-section">
-                    <h4>Before</h4>
-                    <div class="play-button" data-audio="{{ question.audio.before }}">
-                        <div class="play-icon"></div>
+            {% if question.type == "slider" %}
+                <div class="eq-controls">
+                    <div class="eq-sliders">
+                        {% for freq in question.frequencies %}
+                        <div class="eq-slider">
+                            <input type="range" class="eq-control" data-frequency="{{ freq }}" min="-12" max="12" value="0" step="0.1">
+                            <label>{{ freq }} {% if freq >= 1000 %}kHz{% else %}Hz{% endif %}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="nav-btn reset-btn">Reset</button>
+                </div>
+            {% else %}
+                <div class="audio-comparison">
+                    <div class="audio-section">
+                        <h4>Before</h4>
+                        <div class="play-button" data-audio="{{ question.audio.before }}">
+                            <div class="play-icon"></div>
+                        </div>
+                    </div>
+
+                    <div class="audio-section">
+                        <h4>Processed</h4>
+                        <div class="play-button" data-audio="{{ question.audio.after }}">
+                            <div class="play-icon"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="audio-section">
-                    <h4>Processed</h4>
-                    <div class="play-button" data-audio="{{ question.audio.after }}">
-                        <div class="play-icon"></div>
-                    </div>
+                <div class="options">
+                    {% for option in question.options %}
+                    <label class="option">
+                        <input type="radio" name="q{{ question.id }}" value="{{ option.lower().replace(' ', '-') }}">
+                        <span>{{ option }}</span>
+                    </label>
+                    {% endfor %}
                 </div>
-            </div>
-
-            <div class="options">
-                {% for option in question.options %}
-                <label class="option">
-                    <input type="radio" name="q{{ question.id }}" value="{{ option.lower().replace(' ', '-') }}">
-                    <span>{{ option }}</span>
-                </label>
-                {% endfor %}
-            </div>
+            {% endif %}
 
             <div class="navigation-controls">
                 {% if question.id > 1 %}
                 <a href="{{ url_for('quiz_specific', question_id=question.id-1) }}" class="nav-btn prev-btn">Previous</a>
                 {% endif %}
-                <button class="nav-btn next-btn" disabled>Next</button>
+                <button class="nav-btn next-btn" {% if not question.type == "slider" %}disabled{% endif %}>Next</button>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+.slider-controls {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.reset-btn {
+    background: none;
+    border: 1px solid var(--dark);
+    padding: 0.5rem 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--dark);
+}
+
+.reset-btn:hover {
+    background-color: var(--dark);
+    color: var(--light);
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const playButtons = document.querySelectorAll('.play-button');
-    let currentAudio = null;
+    const nextButton = document.querySelector('.next-btn');
 
-    // Handle play button clicks
-    playButtons.forEach(button => {
-        const audioUrl = button.dataset.audio;
-        const audio = new Audio(audioUrl);
+    {% if question.type == "slider" %}
+        // Handle slider question
+        const sliders = document.querySelectorAll('.eq-control');
+        const resetButton = document.querySelector('.reset-btn');
         
-        button.addEventListener('click', function() {
-            if (currentAudio && currentAudio !== audio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-                currentAudio.playButton.classList.remove('playing');
-            }
+        // Reset button functionality
+        resetButton.addEventListener('click', function() {
+            sliders.forEach(slider => {
+                slider.value = 0;
+            });
+        });
+        
+        nextButton.addEventListener('click', function() {
+            const sliderValues = Array.from(sliders).map(slider => ({
+                frequency: parseInt(slider.dataset.frequency),
+                value: parseFloat(slider.value)
+            }));
             
-            if (audio.paused) {
-                audio.play();
-                button.classList.add('playing');
-                currentAudio = audio;
-                currentAudio.playButton = button;
+            // Check if the values create a low pass filter at 1000 Hz
+            const isCorrect = sliderValues.every(slider => {
+                if (slider.frequency > 1000) {
+                    return slider.value <= {{ question.correct_threshold }};
+                }
+                return true;
+            });
+            
+            if (isCorrect) {
+                window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
             } else {
-                audio.pause();
-                audio.currentTime = 0;
+                alert('Try again! Remember, a low pass filter should cut off frequencies above 1000 Hz.');
+            }
+        });
+    {% else %}
+        const playButtons = document.querySelectorAll('.play-button');
+        let currentAudio = null;
+
+        // Handle play button clicks
+        playButtons.forEach(button => {
+            const audioUrl = button.dataset.audio;
+            const audio = new Audio(audioUrl);
+            
+            button.addEventListener('click', function() {
+                if (currentAudio && currentAudio !== audio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                    currentAudio.playButton.classList.remove('playing');
+                }
+                
+                if (audio.paused) {
+                    audio.play();
+                    button.classList.add('playing');
+                    currentAudio = audio;
+                    currentAudio.playButton = button;
+                } else {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    button.classList.remove('playing');
+                    currentAudio = null;
+                }
+            });
+
+            // Add ended event listener
+            audio.addEventListener('ended', function() {
                 button.classList.remove('playing');
                 currentAudio = null;
+            });
+        });
+
+        // Handle answer selection
+        const options = document.querySelectorAll('.option input');
+        
+        options.forEach(option => {
+            option.addEventListener('change', function() {
+                nextButton.disabled = false;
+            });
+        });
+
+        // Handle navigation for multiple choice
+        nextButton.addEventListener('click', function() {
+            const selectedAnswer = document.querySelector(`input[name="q{{ question.id }}"]:checked`);
+            if (selectedAnswer && selectedAnswer.value === '{{ question.correct_answer }}') {
+                window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
+            } else {
+                alert('Try again!');
             }
         });
-
-        // Add ended event listener
-        audio.addEventListener('ended', function() {
-            button.classList.remove('playing');
-            currentAudio = null;
-        });
-    });
-
-    // Handle answer selection
-    const options = document.querySelectorAll('.option input');
-    const nextButton = document.querySelector('.next-btn');
-    
-    options.forEach(option => {
-        option.addEventListener('change', function() {
-            nextButton.disabled = false;
-        });
-    });
-
-    // Handle navigation
-    nextButton.addEventListener('click', function() {
-        const selectedAnswer = document.querySelector(`input[name="q{{ question.id }}"]:checked`);
-        if (selectedAnswer && selectedAnswer.value === '{{ question.correct_answer }}') {
-            // Correct answer
-            window.location.href = '{{ url_for("quiz_specific", question_id=question.id+1) }}';
-        } else {
-            // Wrong answer
-            alert('Try again!');
-        }
-    });
+    {% endif %}
 });
 </script>
 {% endblock %}
