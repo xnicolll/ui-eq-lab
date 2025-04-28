@@ -24,5 +24,18 @@
             "Low Pass"
         ],
         "correct_answer": "high-pass"
+    },
+    {
+        "id": 3,
+        "question": "What technique has been applied?",
+        "audio": {
+            "before": "/static/audio/tylerthecreator_normal.mp3",
+            "after": "/static/audio/tylerthecreator_boosted.mp3"
+        },
+        "options": [
+            "Boost",
+            "Cut"
+        ],
+        "correct_answer": "boost"
     }
 ] 
