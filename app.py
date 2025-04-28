@@ -5,10 +5,6 @@ import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-def load_lesson_data():
-    with open('data/lessons.json', 'r') as f:
-        return json.load(f)
-
 def load_quiz_data():
     with open('data/quiz.json', 'r') as f:
         return json.load(f)
@@ -20,7 +16,8 @@ def home():
 
 @app.route('/intro')
 def intro():
-    return render_template('intro.html', current_step=1)
+    session['completed_intro'] = True
+    return render_template('intro.html')
 
 @app.route('/techniques')
 def techniques():
@@ -32,27 +29,15 @@ def examples():
 
 @app.route('/quiz')
 def quiz():
-    if not session.get('completed_lesson_3'):
-        return redirect(url_for('learn_specific', lesson_id=3))
+    if not session.get('completed_intro'):
+        return redirect(url_for('intro'))
     session['quiz_answers'] = {}  # Initialize empty answers dict
     return redirect(url_for('quiz_specific', question_id=1))
 
-@app.route('/learn/<int:lesson_id>')
-def learn_specific(lesson_id):
-    lessons = load_lesson_data()
-    if lesson_id > len(lessons):
-        return "Lesson not found", 404
-    
-    if lesson_id > 1 and not session.get(f'completed_lesson_{lesson_id-1}'):
-        return redirect(url_for('learn_specific', lesson_id=lesson_id-1))
-    
-    session[f'completed_lesson_{lesson_id}'] = True
-    return render_template('learn.html', lesson=lessons[lesson_id-1], lesson_id=lesson_id)
-
 @app.route('/quiz/<int:question_id>')
 def quiz_specific(question_id):
-    if not session.get('completed_lesson_3'):
-        return redirect(url_for('learn_specific', lesson_id=3))
+    if not session.get('completed_intro'):
+        return redirect(url_for('intro'))
     
     quiz_data = load_quiz_data()
     if question_id > len(quiz_data):
