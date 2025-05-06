@@ -90,7 +90,13 @@ def results():
     # Calculate correct answers
     correct_answers = sum(1 for answer in quiz_answers.values() if answer.get('is_correct'))
     
-    return render_template('results.html', correct_answers=correct_answers)
+    # Create response with results template
+    response = make_response(render_template('results.html', correct_answers=correct_answers))
+    
+    # Clear the quiz answers cookie
+    response.delete_cookie('quiz_answers')
+    
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000) 
