@@ -1152,4 +1152,26 @@ input[type="range"]::-moz-range-track {
 
 .examples-page .audio-upload p {
     display: none;
+}
+
+/* Quiz Page Styles */
+.slider-controls {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.reset-btn {
+    background: none;
+    border: 1px solid var(--dark);
+    padding: 0.5rem 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--dark);
+}
+
+.reset-btn:hover {
+    background-color: var(--dark);
+    color: var(--light);
 } 
