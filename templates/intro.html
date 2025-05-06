@@ -112,20 +112,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
     const steps = document.querySelectorAll('.learn-step');
+    const stepCounter = document.querySelector('.step-counter');
     let currentStep = 1;
+    const totalSteps = steps.length;
 
     function updateSteps() {
+        // Hide all steps
         steps.forEach(step => {
-            if (parseInt(step.dataset.step) === currentStep) {
-                step.style.display = 'block';
-            } else {
-                step.style.display = 'none';
-            }
+            step.style.display = 'none';
         });
+        
+        // Show current step
+        const currentStepElement = document.querySelector(`.learn-step[data-step="${currentStep}"]`);
+        if (currentStepElement) {
+            currentStepElement.style.display = 'block';
+        }
 
+        // Update step counter
+        stepCounter.textContent = `${currentStep} / ${totalSteps}`;
+
+        // Update button states
         prevBtn.disabled = currentStep === 1;
         
-        if (currentStep === steps.length) {
+        if (currentStep === totalSteps) {
             nextBtn.textContent = 'EQ Techniques';
             nextBtn.href = '/techniques';
             nextBtn.onclick = null;
@@ -140,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Handle previous button click
     prevBtn.addEventListener('click', () => {
         if (currentStep > 1) {
             currentStep--;
