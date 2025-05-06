@@ -1,24 +1,66 @@
 [
     {
         "id": 1,
-        "question": "What is the purpose of EQ in audio processing?",
+        "question": "What technique has been applied?",
+        "audio": {
+            "before": "/static/audio/fredagain_normal.mp3",
+            "after": "/static/audio/fredagain_lowpass.mp3"
+        },
         "options": [
-            "To adjust volume levels",
-            "To balance frequency components",
-            "To add reverb effects",
-            "To compress audio"
+            "High Pass",
+            "Low Pass"
         ],
-        "correct_answer": 1
+        "correct_answer": "low-pass"
     },
     {
         "id": 2,
-        "question": "Which frequency range is typically associated with bass?",
+        "question": "What technique has been applied?",
+        "audio": {
+            "before": "/static/audio/tylerthecreator_normal.mp3",
+            "after": "/static/audio/tylerthecreator_hipass.mp3"
+        },
         "options": [
-            "20Hz - 250Hz",
-            "250Hz - 2kHz",
-            "2kHz - 4kHz",
-            "4kHz - 20kHz"
+            "High Pass",
+            "Low Pass"
         ],
-        "correct_answer": 0
+        "correct_answer": "high-pass"
+    },
+    {
+        "id": 3,
+        "question": "What technique has been applied?",
+        "audio": {
+            "before": "/static/audio/tylerthecreator_normal.mp3",
+            "after": "/static/audio/tylerthecreator_boosted.mp3"
+        },
+        "options": [
+            "Boost",
+            "Cut"
+        ],
+        "correct_answer": "boost"
+    },
+    {
+        "id": 4,
+        "question": "What has been boosted?",
+        "audio": {
+            "before": "/static/audio/tylerthecreator_normal.mp3",
+            "after": "/static/audio/tylerthecreator_trebleboosted.mp3"
+        },
+        "options": [
+            "Treble",
+            "Bass"
+        ],
+        "correct_answer": "treble"
+    },
+    {
+        "id": 5,
+        "question": "Create a low pass filter at 1000 Hz by adjusting the EQ sliders",
+        "type": "slider",
+        "frequencies": [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000],
+        "correct_threshold": -10,
+        "validation": {
+            "type": "low_pass",
+            "cutoff_frequency": 1000,
+            "tolerance": 2
+        }
     }
 ] 

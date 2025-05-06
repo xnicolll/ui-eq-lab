@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-section">
+    <div class="learn-container">
+        <div class="learn-header">
+            <h2>{{ lesson.title }}</h2>
+        </div>
+
+        <div class="learn-content">
+            <p>{{ lesson.content }}</p>
+
+            {% if lesson.audio_examples %}
+            <div class="audio-examples">
+                <h3>Audio Examples</h3>
+                {% for example in lesson.audio_examples %}
+                <div class="audio-example">
+                    <h4>{{ example.title }}</h4>
+                    <audio controls>
+                        <source src="{{ url_for('static', filename='audio/' + example.file) }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="navigation-controls">
+                {% if lesson_id > 1 %}
+                <a href="{{ url_for('learn_specific', lesson_id=lesson_id-1) }}" class="nav-btn">Previous</a>
+                {% endif %}
+                
+                {% if lesson_id < 3 %}
+                <a href="{{ url_for('learn_specific', lesson_id=lesson_id+1) }}" class="nav-btn">Next</a>
+                {% else %}
+                <a href="{{ url_for('quiz') }}" class="nav-btn">Start Quiz</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
