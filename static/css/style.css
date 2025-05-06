@@ -1121,4 +1121,35 @@ input[type="range"]::-moz-range-track {
     justify-content: center;
     gap: 2rem;
     margin-top: 3rem;
+}
+
+/* Song Examples page specific styles */
+.examples-page .content-section {
+    padding-top: 1rem;
+}
+
+.examples-page .audio-selection {
+    margin-bottom: 1rem;
+}
+
+.examples-page .preset-tracks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.examples-page .upload-container {
+    display: inline-flex;
+    margin: 0;
+}
+
+.examples-page .audio-upload {
+    margin: 0;
+    display: inline-flex;
+}
+
+.examples-page .audio-upload p {
+    display: none;
 } 
