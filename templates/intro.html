@@ -5,8 +5,10 @@
     <div class="learn-container">
         <div class="learn-step" data-step="1">
             <div class="learn-content">
-                <p>EQ (Equalization) is the process of adjusting the balance of frequency components within an audio signal.</p>
-                <p>Think of it like shaping the sound.</p>
+                <p>EQ (Equalization) is the process of adjusting the loudness of different frequencies in an audio signal to achieve a more balanced sound.</p>
+                <p>When an audio signal is left untreated, there will often be clashing frequencies, or "not enough room" for every detail to be heard. It's the audio engineer's role
+                    to use EQing and decide on which details to highlight, and which to turn down.
+                </p>
             </div>
         </div>
 
@@ -17,6 +19,7 @@
                     <li>Turn up the bass</li>
                     <li>Soften harsh treble</li>
                     <li>Carve out space in a mix</li>
+                    <li>You can do practically anything!</li>
                 </ul>
             </div>
         </div>
@@ -50,6 +53,65 @@
                 </div>
             </div>
         </div>
+        <style>
+        .freq-group {
+            position: relative;
+        }
+
+        .freq-group::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .freq-group:nth-child(1):hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Bass.jpg');
+        }
+        .freq-group:nth-child(1):hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Bass.jpg');
+            border: 1px solid var(--dark);
+            background-color: var(--light);
+            width: 300px;
+            height: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .freq-group:nth-child(2):hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Midrange.jpg');
+            border: 1px solid var(--dark);
+            background-color: var(--light);
+            width: 300px;
+            height: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .freq-group:nth-child(3):hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Brilliance.jpg');
+            border: 1px solid var(--dark);
+            background-color: var(--light);
+            width: 300px;
+            height: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        </style>
 
         <div class="navigation-controls">
             <div class="step-counter">1 / 4</div>
