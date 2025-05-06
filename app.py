@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, make_response
 import json
 import os
 
@@ -8,6 +8,12 @@ app.secret_key = 'your_secret_key_here'
 def load_quiz_data():
     with open('data/quiz.json', 'r') as f:
         return json.load(f)
+
+def get_quiz_answers_from_cookies():
+    answers = request.cookies.get('quiz_answers')
+    if answers:
+        return json.loads(answers)
+    return {}
 
 @app.route('/')
 def home():
@@ -31,7 +37,6 @@ def examples():
 def quiz():
     if not session.get('completed_intro'):
         return redirect(url_for('intro'))
-    session['quiz_answers'] = {}  # Initialize empty answers dict
     return redirect(url_for('quiz_specific', question_id=1))
 
 @app.route('/quiz/<int:question_id>')
@@ -43,43 +48,47 @@ def quiz_specific(question_id):
     if question_id > len(quiz_data):
         return "Question not found", 404
     
-    # Initialize quiz_answers if not exists
-    if 'quiz_answers' not in session:
-        session['quiz_answers'] = {}
+    # Get answers from cookies
+    quiz_answers = get_quiz_answers_from_cookies()
     
-    return render_template('quiz.html', question=quiz_data[question_id-1], question_id=question_id)
+    return render_template('quiz.html', 
+                         question=quiz_data[question_id-1], 
+                         question_id=question_id,
+                         saved_answer=quiz_answers.get(str(question_id)))
 
 @app.route('/store_answer', methods=['POST'])
 def store_answer():
     data = request.get_json()
     question_id = str(data.get('question_id'))
+    answer_value = data.get('answer_value')  # Store the actual answer value
     is_correct = data.get('is_correct')
     
-    # Initialize quiz_answers if not exists
-    if 'quiz_answers' not in session:
-        session['quiz_answers'] = {}
+    # Get existing answers from cookies
+    quiz_answers = get_quiz_answers_from_cookies()
     
-    # Create a new dictionary with the updated answer
-    answers = dict(session['quiz_answers'])
-    answers[question_id] = is_correct
+    # Update answers
+    quiz_answers[question_id] = {
+        'value': answer_value,
+        'is_correct': is_correct
+    }
     
-    # Update the session with the new answers
-    session['quiz_answers'] = answers
-    session.modified = True
+    # Create response
+    response = make_response(jsonify({
+        'status': 'success', 
+        'stored_answers': quiz_answers
+    }))
     
-    return jsonify({'status': 'success', 'stored_answers': session['quiz_answers']})
+    # Set cookie with updated answers
+    response.set_cookie('quiz_answers', json.dumps(quiz_answers), max_age=86400)  # Expires in 24 hours
+    
+    return response
 
 @app.route('/results')
 def results():
-    if 'quiz_answers' not in session:
-        return redirect(url_for('quiz'))
+    quiz_answers = get_quiz_answers_from_cookies()
     
     # Calculate correct answers
-    correct_answers = sum(1 for answer in session['quiz_answers'].values() if answer)
-    
-    # Debug print
-    print("Quiz Answers:", session['quiz_answers'])
-    print("Correct Answers:", correct_answers)
+    correct_answers = sum(1 for answer in quiz_answers.values() if answer.get('is_correct'))
     
     return render_template('results.html', correct_answers=correct_answers)
 

@@ -13,7 +13,7 @@
                     <div class="eq-sliders">
                         {% for freq in question.frequencies %}
                         <div class="eq-slider">
-                            <input type="range" class="eq-control" data-frequency="{{ freq }}" min="-12" max="12" value="0" step="0.1">
+                            <input type="range" class="eq-control" data-frequency="{{ freq }}" min="-12" max="12" value="{% if saved_answer and saved_answer.value %}{{ saved_answer.value[loop.index0] }}{% else %}0{% endif %}" step="0.1">
                             <label>{{ freq }} {% if freq >= 1000 %}kHz{% else %}Hz{% endif %}</label>
                         </div>
                         {% endfor %}
@@ -42,7 +42,7 @@
                 <div class="options">
                     {% for option in question.options %}
                     <label class="option">
-                        <input type="radio" name="q{{ question.id }}" value="{{ option.lower().replace(' ', '-') }}">
+                        <input type="radio" name="q{{ question.id }}" value="{{ option.lower().replace(' ', '-') }}" {% if saved_answer and saved_answer.value == option.lower().replace(' ', '-') %}checked{% endif %}>
                         <span>{{ option }}</span>
                     </label>
                     {% endfor %}
@@ -53,7 +53,7 @@
                 {% if question.id > 1 %}
                 <a href="{{ url_for('quiz_specific', question_id=question.id-1) }}" class="nav-btn prev-btn">Previous</a>
                 {% endif %}
-                <button class="nav-btn next-btn" {% if not question.type == "slider" %}disabled{% endif %}>Next</button>
+                <button class="nav-btn next-btn" {% if not question.type == "slider" and not saved_answer %}disabled{% endif %}>Next</button>
             </div>
         </div>
     </div>
@@ -104,7 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 value: parseFloat(slider.value)
             }));
             
-            // Check if the values create a low pass filter at 1000 Hz and store result
+            // Get all slider values for storage
+            const sliderValuesArray = sliderValues.map(sv => sv.value);
+            
+            // Check if the values create a low pass filter at 1000 Hz
             const isCorrect = sliderValues.every(slider => {
                 if (slider.frequency > 1000) {
                     return slider.value <= {{ question.correct_threshold }};
@@ -120,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({
                     question_id: {{ question.id }},
+                    answer_value: sliderValuesArray,
                     is_correct: isCorrect
                 })
             })
@@ -191,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     body: JSON.stringify({
                         question_id: {{ question.id }},
+                        answer_value: selectedAnswer.value,
                         is_correct: selectedAnswer.value === '{{ question.correct_answer }}'
                     })
                 })
