@@ -2,6 +2,11 @@
 
 {% block content %}
 <div class="content-section examples-page">
+    <!-- Popup note -->
+    <div class="scroll-note">
+        <p>Scroll down for more features...</p>
+    </div>
+    
     <div class="overview-section">
         <div class="overview-graphic">
             <div class="learn-content">
@@ -113,6 +118,75 @@
 .pass-filters {
     margin-bottom: 0;
 }
+
+/* Fix for centering the examples page content */
+.examples-page .overview-section,
+.examples-page .overview-graphic,
+.examples-page .learn-content {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.examples-page .content-section {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.examples-page .eq-board {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Scroll note styling */
+.scroll-note {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--dark);
+    color: var(--light);
+    border: none;
+    padding: 15px 20px;
+    max-width: 180px;
+    text-align: center;
+    z-index: 100;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    box-shadow: none;
+    animation: pulse 2s infinite;
+}
+
+.scroll-note p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; transform: translateY(-50%) scale(1); }
+    50% { opacity: 1; transform: translateY(-50%) scale(1.05); }
+    100% { opacity: 0.8; transform: translateY(-50%) scale(1); }
+}
+
+/* Hide the note on smaller screens */
+@media (max-width: 1200px) {
+    .scroll-note {
+        left: 10px;
+        padding: 10px 15px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 992px) {
+    .scroll-note {
+        display: none;
+    }
+}
 </style>
 
 <script>
@@ -132,56 +206,83 @@ document.addEventListener('DOMContentLoaded', function() {
     let filters = [];
     let highPassFilter;
     let lowPassFilter;
+    let isAudioSetup = false;
     
-    // Initialize audio context
+    // Initialize audio context and nodes
     function initAudioContext() {
-        if (audioContext) {
-            audioContext.close();
+        if (!audioContext || audioContext.state === 'closed') {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            gainNode = audioContext.createGain();
+            
+            // Create high and low pass filters
+            highPassFilter = audioContext.createBiquadFilter();
+            highPassFilter.type = 'highpass';
+            highPassFilter.frequency.value = 20;
+            highPassFilter.Q.value = 1;
+            
+            lowPassFilter = audioContext.createBiquadFilter();
+            lowPassFilter.type = 'lowpass';
+            lowPassFilter.frequency.value = 20000;
+            lowPassFilter.Q.value = 1;
+            
+            // Create EQ filters
+            const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
+            filters = [];
+            frequencies.forEach(freq => {
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'peaking';
+                filter.frequency.value = freq;
+                filter.Q.value = 1;
+                filter.gain.value = 0;
+                filters.push(filter);
+            });
+            
+            // Connect all filters in series
+            highPassFilter.connect(lowPassFilter);
+            filters.reduce((prev, curr) => {
+                prev.connect(curr);
+                return curr;
+            }, lowPassFilter).connect(gainNode);
+            
+            gainNode.connect(audioContext.destination);
+            isAudioSetup = false;
         }
-        
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        gainNode = audioContext.createGain();
-        
-        // Create high and low pass filters
-        highPassFilter = audioContext.createBiquadFilter();
-        highPassFilter.type = 'highpass';
-        highPassFilter.frequency.value = 20;
-        highPassFilter.Q.value = 1;
-        
-        lowPassFilter = audioContext.createBiquadFilter();
-        lowPassFilter.type = 'lowpass';
-        lowPassFilter.frequency.value = 20000;
-        lowPassFilter.Q.value = 1;
-        
-        // Create EQ filters
-        const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
-        filters = [];
-        frequencies.forEach(freq => {
-            const filter = audioContext.createBiquadFilter();
-            filter.type = 'peaking';
-            filter.frequency.value = freq;
-            filter.Q.value = 1;
-            filter.gain.value = 0;
-            filters.push(filter);
-        });
-        
-        // Connect all filters in series
-        highPassFilter.connect(lowPassFilter);
-        filters.reduce((prev, curr) => {
-            prev.connect(curr);
-            return curr;
-        }, lowPassFilter).connect(gainNode);
-        
-        gainNode.connect(audioContext.destination);
     }
 
     // Setup audio source
     function setupAudioSource() {
+        // Disconnect previous source if it exists
         if (source) {
             source.disconnect();
         }
+        
+        // Create and connect new source
         source = audioContext.createMediaElementSource(audioPlayer);
         source.connect(highPassFilter);
+        isAudioSetup = true;
+    }
+    
+    // Function to handle changing audio tracks
+    function changeTrack(trackUrl) {
+        // Stop current playback
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        
+        // Set new source
+        audioPlayer.src = trackUrl;
+        
+        // Initialize audio context if needed
+        initAudioContext();
+        
+        // Only setup audio source if not already set up
+        if (!isAudioSetup) {
+            setupAudioSource();
+        }
+        
+        // Resume audio context if it's suspended
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
     }
 
     // Handle preset track selection
@@ -192,20 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 '/static/audio/tylerthecreator_normal_full.mp3' : 
                 `/static/audio/${track}_normal.mp3`;
             
-            // Stop current playback
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-            
-            // Set new source
-            audioPlayer.src = trackUrl;
-            
-            // Initialize audio context if needed
-            if (!audioContext || audioContext.state === 'closed') {
-                initAudioContext();
-            }
-            
-            // Setup new audio source
-            setupAudioSource();
+            changeTrack(trackUrl);
         });
     });
     
@@ -214,21 +302,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = e.target.files[0];
         if (file) {
             const url = URL.createObjectURL(file);
-            
-            // Stop current playback
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-            
-            // Set new source
-            audioPlayer.src = url;
-            
-            // Initialize audio context if needed
-            if (!audioContext || audioContext.state === 'closed') {
-                initAudioContext();
-            }
-            
-            // Setup new audio source
-            setupAudioSource();
+            changeTrack(url);
+        }
+    });
+
+    // Play event listener to ensure audio context is running
+    audioPlayer.addEventListener('play', function() {
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
         }
     });
 
