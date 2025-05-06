@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="content-section">
+<div class="content-section examples-page">
     <div class="overview-section">
         <div class="overview-graphic">
             <div class="learn-content">
@@ -11,9 +11,6 @@
                         <div class="preset-tracks">
                             <button class="track-btn" data-track="tylerthecreator">Tyler, The Creator</button>
                             <button class="track-btn" data-track="fredagain">Fred Again</button>
-                        </div>
-                        <div class="audio-upload">
-                            <p>Or upload your own:</p>
                             <div class="upload-container">
                                 <input type="file" id="audio-file" accept="audio/*" class="file-input">
                                 <label for="audio-file" class="file-label">Choose Audio File</label>
@@ -89,11 +86,34 @@
                             <span class="frequency-value">20 kHz</span>
                         </div>
                     </div>
+
+                    <div class="navigation-controls">
+                        <div class="nav-buttons">
+                            <a href="/techniques" class="nav-btn">Back to Techniques</a>
+                            <a href="/quiz" class="nav-btn quiz-btn">Take the Quiz</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.quiz-prompt {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.navigation-controls {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.pass-filters {
+    margin-bottom: 0;
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -155,26 +175,37 @@ document.addEventListener('DOMContentLoaded', function() {
         gainNode.connect(audioContext.destination);
     }
 
+    // Setup audio source
+    function setupAudioSource() {
+        if (source) {
+            source.disconnect();
+        }
+        source = audioContext.createMediaElementSource(audioPlayer);
+        source.connect(highPassFilter);
+    }
+
     // Handle preset track selection
     trackButtons.forEach(button => {
         button.addEventListener('click', function() {
             const track = this.dataset.track;
-            const trackUrl = `/static/audio/${track}_normal.mp3`;
+            const trackUrl = track === 'tylerthecreator' ? 
+                '/static/audio/tylerthecreator_normal_full.mp3' : 
+                `/static/audio/${track}_normal.mp3`;
+            
+            // Stop current playback
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            
+            // Set new source
             audioPlayer.src = trackUrl;
             
-            // Initialize audio context on first play
-            audioPlayer.addEventListener('play', function() {
-                if (!audioContext || audioContext.state === 'closed') {
-                    initAudioContext();
-                }
-                
-                // Create new source node
-                if (source) {
-                    source.disconnect();
-                }
-                source = audioContext.createMediaElementSource(audioPlayer);
-                source.connect(highPassFilter);
-            }, { once: true });
+            // Initialize audio context if needed
+            if (!audioContext || audioContext.state === 'closed') {
+                initAudioContext();
+            }
+            
+            // Setup new audio source
+            setupAudioSource();
         });
     });
     
@@ -183,21 +214,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = e.target.files[0];
         if (file) {
             const url = URL.createObjectURL(file);
+            
+            // Stop current playback
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            
+            // Set new source
             audioPlayer.src = url;
             
-            // Initialize audio context on first play
-            audioPlayer.addEventListener('play', function() {
-                if (!audioContext || audioContext.state === 'closed') {
-                    initAudioContext();
-                }
-                
-                // Create new source node
-                if (source) {
-                    source.disconnect();
-                }
-                source = audioContext.createMediaElementSource(audioPlayer);
-                source.connect(highPassFilter);
-            }, { once: true });
+            // Initialize audio context if needed
+            if (!audioContext || audioContext.state === 'closed') {
+                initAudioContext();
+            }
+            
+            // Setup new audio source
+            setupAudioSource();
         }
     });
 

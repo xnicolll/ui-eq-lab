@@ -8,6 +8,45 @@
             <p>You got <span class="score-number">{{ correct_answers }}</span> out of 5 questions correct!</p>
         </div>
 
+        <button class="dropdown-toggle nav-btn">Show Detailed Results</button>
+        
+        <div class="detailed-results" style="display: none;">
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Topic</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for answer in user_answers %}
+                    <tr>
+                        <td>
+                            {% if answer.question_id == 1 %}
+                                Pass Technique
+                            {% elif answer.question_id == 2 %}
+                                Pass Technique
+                            {% elif answer.question_id == 3 %}
+                                Boost / Cut Technique
+                            {% elif answer.question_id == 4 %}
+                                Treble / Bass Identification
+                            {% elif answer.question_id == 5 %}
+                                Low Pass Filter
+                            {% endif %}
+                        </td>
+                        <td class="{% if answer.is_correct %}correct{% else %}incorrect{% endif %}">
+                            {% if answer.is_correct %}
+                                Correct
+                            {% else %}
+                                Incorrect
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
         {% if correct_answers >= 3 %}
         <div class="success-message">
             <h3>Congratulations on completing our EQ Crash Course!</h3>
@@ -55,5 +94,79 @@
     color: var(--dark);
     margin-bottom: 1.5rem;
 }
+
+.dropdown-toggle {
+    margin: 1rem 0;
+    padding: 0.5rem 1.5rem;
+}
+
+.detailed-results {
+    margin: 1.5rem auto;
+    max-width: 400px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.results-table th,
+.results-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--accent);
+}
+
+.results-table th {
+    background-color: var(--dark);
+    color: var(--light);
+    font-weight: 300;
+}
+
+.results-table td.correct {
+    color: #2ecc71;
+}
+
+.results-table td.incorrect {
+    color: #e74c3c;
+}
+
+.detailed-results {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.detailed-results.show {
+    opacity: 1;
+    max-height: 500px;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.querySelector('.dropdown-toggle');
+    const detailedResults = document.querySelector('.detailed-results');
+    
+    toggleButton.addEventListener('click', function() {
+        const isHidden = detailedResults.style.display === 'none';
+        
+        if (isHidden) {
+            detailedResults.style.display = 'block';
+            setTimeout(() => {
+                detailedResults.classList.add('show');
+            }, 10);
+            toggleButton.textContent = 'Hide Detailed Results';
+        } else {
+            detailedResults.classList.remove('show');
+            setTimeout(() => {
+                detailedResults.style.display = 'none';
+            }, 300);
+            toggleButton.textContent = 'Show Detailed Results';
+        }
+    });
+});
+</script>
 {% endblock %} 

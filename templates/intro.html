@@ -31,52 +31,124 @@
         <div class="learn-step" data-step="4" style="display: none;">
             <div class="learn-content">
                 <p>The frequency range is split into three main groups:</p>
-                <div class="frequency-groups">
-                    <div class="freq-group">Lows</div>
-                    <div class="freq-group">Mids</div>
-                    <div class="freq-group">Highs</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="learn-step" data-step="5" style="display: none;">
-            <div class="learn-content">
-                <p>Frequency Range Overview:</p>
-                <div class="eq-graphic">
-                    <div class="eq-bars">
-                        <div class="eq-bar">
-                            <div class="freq-label">0Hz</div>
-                        </div>
-                        <div class="eq-bar">
-                            <div class="freq-label">250Hz</div>
-                        </div>
-                        <div class="eq-bar">
-                            <div class="freq-label">2kHz</div>
-                        </div>
-                        <div class="eq-bar">
-                            <div class="freq-label">20kHz</div>
-                        </div>
+                <div class="frequency-range">
+                    <div class="freq-group">
+                        <div class="freq-label">Lows</div>
+                        <div class="freq-range">20 Hz - 250 Hz</div>
+                        <div class="freq-examples">Bass, Kick Drum</div>
                     </div>
-                    <div class="freq-ranges">
-                        <div class="freq-range low">Low Frequency</div>
-                        <div class="freq-range mid">Mid Frequency</div>
-                        <div class="freq-range high">High Frequency</div>
+                    <div class="freq-group">
+                        <div class="freq-label">Mids</div>
+                        <div class="freq-range">250 Hz - 4 kHz</div>
+                        <div class="freq-examples">Vocals, Guitar</div>
+                    </div>
+                    <div class="freq-group">
+                        <div class="freq-label">Highs</div>
+                        <div class="freq-range">4 kHz - 20 kHz</div>
+                        <div class="freq-examples">Cymbals, Hi-hat</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="navigation-controls">
-            <div class="step-counter">1 / 5</div>
+            <div class="step-counter">1 / 4</div>
             <div class="nav-buttons">
                 <button class="nav-btn prev-btn" disabled>Previous</button>
-                {% if current_step == 5 %}
-                <a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>
-                {% else %}
-                <button class="nav-btn next-btn">Next</button>
-                {% endif %}
+                <a href="/techniques" class="nav-btn next-btn">Next</a>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.learn-content {
+    width: 100%;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.frequency-range {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+    gap: 2rem;
+    max-width: 1000px;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+}
+
+.freq-group {
+    flex: 1;
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid var(--dark);
+    background-color: var(--light);
+    min-width: 250px;
+    max-width: 300px;
+}
+
+.freq-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.freq-range {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.freq-examples {
+    font-size: 0.9rem;
+    color: var(--dark);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const steps = document.querySelectorAll('.learn-step');
+    let currentStep = 1;
+
+    function updateSteps() {
+        steps.forEach(step => {
+            if (parseInt(step.dataset.step) === currentStep) {
+                step.style.display = 'block';
+            } else {
+                step.style.display = 'none';
+            }
+        });
+
+        prevBtn.disabled = currentStep === 1;
+        
+        if (currentStep === steps.length) {
+            nextBtn.textContent = 'EQ Techniques';
+            nextBtn.href = '/techniques';
+            nextBtn.onclick = null;
+        } else {
+            nextBtn.textContent = 'Next';
+            nextBtn.href = '#';
+            nextBtn.onclick = function(e) {
+                e.preventDefault();
+                currentStep++;
+                updateSteps();
+            };
+        }
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            updateSteps();
+        }
+    });
+
+    // Initialize first step
+    updateSteps();
+});
+</script>
 {% endblock %} 

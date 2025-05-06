@@ -57,33 +57,31 @@ body {
     border: 1px solid var(--light);
     border-radius: 0;
     transition: none;
+    opacity: 1;
+    cursor: pointer;
 }
 
-.nav-link.disabled {
+.nav-link[data-accessible="false"] {
     color: var(--accent) !important;
     border-color: var(--accent);
     pointer-events: none;
     opacity: 0.7;
-}
-
-.nav-link:not(.disabled):hover, 
-.nav-link:not(.disabled):focus {
-    background-color: var(--light);
-    color: var(--dark) !important;
-}
-
-.nav-link.disabled:hover, 
-.nav-link.disabled:focus {
-    background-color: transparent;
-    color: var(--accent) !important;
     cursor: not-allowed;
 }
 
-.nav-link[data-accessible="true"] {
+.nav-link[data-accessible="true"],
+.nav-link:not([data-accessible]) {
     color: var(--light) !important;
     border-color: var(--light);
     pointer-events: auto;
     opacity: 1;
+    cursor: pointer;
+}
+
+.nav-link[data-accessible="true"]:hover,
+.nav-link:not([data-accessible]):hover {
+    background-color: var(--light);
+    color: var(--dark) !important;
 }
 
 /* Equalizer */
@@ -164,13 +162,25 @@ body {
     margin-top: 0;
 }
 
-/* What is EQ page specific navigation */
-.intro-page .navigation-controls {
-    position: absolute;
-    bottom: 2rem;
-    left: 0;
-    right: 0;
-    margin-top: 0;
+/* What is EQ page specific styles */
+.intro-page .content-section {
+    height: 67vh;
+    overflow: hidden;
+}
+
+.intro-page .learn-container {
+    height: 100%;
+    overflow: hidden;
+}
+
+.intro-page .learn-step {
+    height: 100%;
+    overflow: hidden;
+}
+
+.intro-page .learn-content {
+    height: 100%;
+    overflow: hidden;
 }
 
 /* Navigation */
@@ -1109,4 +1119,57 @@ input[type="range"]::-moz-range-track {
     justify-content: center;
     gap: 2rem;
     margin-top: 3rem;
+}
+
+/* Song Examples page specific styles */
+.examples-page .content-section {
+    padding-top: 1rem;
+}
+
+.examples-page .audio-selection {
+    margin-bottom: 1rem;
+}
+
+.examples-page .preset-tracks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.examples-page .upload-container {
+    display: inline-flex;
+    margin: 0;
+}
+
+.examples-page .audio-upload {
+    margin: 0;
+    display: inline-flex;
+}
+
+.examples-page .audio-upload p {
+    display: none;
+}
+
+/* Quiz Page Styles */
+.slider-controls {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.reset-btn {
+    background: none;
+    border: 1px solid var(--dark);
+    padding: 0.5rem 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--dark);
+}
+
+.reset-btn:hover {
+    background-color: var(--dark);
+    color: var(--light);
 } 
