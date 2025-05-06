@@ -2,6 +2,11 @@
 
 {% block content %}
 <div class="content-section examples-page">
+    <!-- Popup note -->
+    <div class="scroll-note">
+        <p>Scroll down for more features...</p>
+    </div>
+    
     <div class="overview-section">
         <div class="overview-graphic">
             <div class="learn-content">
@@ -135,6 +140,52 @@
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
+}
+
+/* Scroll note styling */
+.scroll-note {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--dark);
+    color: var(--light);
+    border: none;
+    padding: 15px 20px;
+    max-width: 180px;
+    text-align: center;
+    z-index: 100;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    box-shadow: none;
+    animation: pulse 2s infinite;
+}
+
+.scroll-note p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; transform: translateY(-50%) scale(1); }
+    50% { opacity: 1; transform: translateY(-50%) scale(1.05); }
+    100% { opacity: 0.8; transform: translateY(-50%) scale(1); }
+}
+
+/* Hide the note on smaller screens */
+@media (max-width: 1200px) {
+    .scroll-note {
+        left: 10px;
+        padding: 10px 15px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 992px) {
+    .scroll-note {
+        display: none;
+    }
 }
 </style>
 
