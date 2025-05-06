@@ -8,9 +8,27 @@ $(document).ready(function() {
     $('.eq-control').on('input', function() {
         const value = $(this).val();
         const frequency = $(this).data('frequency');
-        // Add your EQ processing logic here
         console.log(`Frequency ${frequency}Hz: ${value}dB`);
     });
+
+    // Cookie management functions
+    function setCookie(name, value, hours = 24) {
+        const date = new Date();
+        date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+    }
 
     // Navigation state management
     function updateNavigationState() {
@@ -18,14 +36,14 @@ $(document).ready(function() {
         const quizNav = $('#quiz-nav');
         
         // Check if user has completed techniques
-        if (localStorage.getItem('completed_techniques')) {
+        if (getCookie('completed_techniques')) {
             examplesNav.removeClass('disabled').attr('data-accessible', 'true');
         } else {
             examplesNav.addClass('disabled').attr('data-accessible', 'false');
         }
         
         // Check if user has accessed examples
-        if (localStorage.getItem('accessed_examples')) {
+        if (getCookie('accessed_examples')) {
             quizNav.removeClass('disabled').attr('data-accessible', 'true');
         } else {
             quizNav.addClass('disabled').attr('data-accessible', 'false');
@@ -34,7 +52,8 @@ $(document).ready(function() {
 
     // Handle navigation clicks
     $('.nav-link').on('click', function(e) {
-        if ($(this).attr('data-accessible') === 'false') {
+        const isAccessible = $(this).attr('data-accessible');
+        if (isAccessible === 'false') {
             e.preventDefault();
             return false;
         }
@@ -43,19 +62,40 @@ $(document).ready(function() {
     // Update navigation when reaching the end of techniques
     if (window.location.pathname === '/techniques') {
         $('.next-btn').on('click', function() {
-            if (currentStep === 5) {
-                localStorage.setItem('completed_techniques', 'true');
+            if (typeof currentStep !== 'undefined' && currentStep === 5) {
+                setCookie('completed_techniques', 'true');
                 updateNavigationState();
+                window.location.href = '/examples';
             }
         });
     }
 
     // Mark examples as accessed when visiting the page
     if (window.location.pathname === '/examples') {
-        localStorage.setItem('completed_techniques', 'true');
-        localStorage.setItem('accessed_examples', 'true');
+        setCookie('completed_techniques', 'true');
+        setCookie('accessed_examples', 'true');
         updateNavigationState();
     }
+
+    // Handle quiz completion
+    if (window.location.pathname === '/results') {
+        setCookie('completed_quiz', 'true');
+        updateNavigationState();
+    }
+
+    // Check if we need to reset cookies (user left the site)
+    const lastVisit = getCookie('last_visit');
+    const now = new Date().getTime();
+    
+    if (!lastVisit || (now - parseInt(lastVisit)) > 30 * 60 * 1000) { // 30 minutes
+        // Reset all progress cookies
+        deleteCookie('completed_techniques');
+        deleteCookie('accessed_examples');
+        deleteCookie('completed_quiz');
+    }
+    
+    // Update last visit time
+    setCookie('last_visit', now.toString());
 
     // Initialize navigation state
     updateNavigationState();

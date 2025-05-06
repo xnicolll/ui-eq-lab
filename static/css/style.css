@@ -57,33 +57,31 @@ body {
     border: 1px solid var(--light);
     border-radius: 0;
     transition: none;
+    opacity: 1;
+    cursor: pointer;
 }
 
-.nav-link.disabled {
+.nav-link[data-accessible="false"] {
     color: var(--accent) !important;
     border-color: var(--accent);
     pointer-events: none;
     opacity: 0.7;
-}
-
-.nav-link:not(.disabled):hover, 
-.nav-link:not(.disabled):focus {
-    background-color: var(--light);
-    color: var(--dark) !important;
-}
-
-.nav-link.disabled:hover, 
-.nav-link.disabled:focus {
-    background-color: transparent;
-    color: var(--accent) !important;
     cursor: not-allowed;
 }
 
-.nav-link[data-accessible="true"] {
+.nav-link[data-accessible="true"],
+.nav-link:not([data-accessible]) {
     color: var(--light) !important;
     border-color: var(--light);
     pointer-events: auto;
     opacity: 1;
+    cursor: pointer;
+}
+
+.nav-link[data-accessible="true"]:hover,
+.nav-link:not([data-accessible]):hover {
+    background-color: var(--light);
+    color: var(--dark) !important;
 }
 
 /* Equalizer */

@@ -95,7 +95,20 @@ function navigateToStep(step) {
     const nextBtn = document.querySelector('.next-btn');
     
     prevBtn.disabled = step === 1;
-    nextBtn.disabled = step === 5;
+    
+    if (step === 5) {
+        nextBtn.textContent = 'Go to Song Examples';
+        nextBtn.addEventListener('click', function() {
+            window.location.href = '/examples';
+        });
+    } else {
+        nextBtn.textContent = 'Next';
+        nextBtn.onclick = function() {
+            if (currentStep < 5) {
+                navigateToStep(currentStep + 1);
+            }
+        };
+    }
     
     // Update current step
     currentStep = step;
@@ -108,10 +121,7 @@ document.querySelector('.prev-btn').addEventListener('click', function() {
     }
 });
 
-document.querySelector('.next-btn').addEventListener('click', function() {
-    if (currentStep < 5) {
-        navigateToStep(currentStep + 1);
-    }
-});
+// Initialize first step
+navigateToStep(1);
 </script>
 {% endblock %} 
