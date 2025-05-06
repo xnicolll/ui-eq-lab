@@ -90,8 +90,21 @@ def results():
     # Calculate correct answers
     correct_answers = sum(1 for answer in quiz_answers.values() if answer.get('is_correct'))
     
+    # Format answers for the template
+    user_answers = [
+        {
+            'question_id': int(q_id),
+            'is_correct': answer.get('is_correct')
+        }
+        for q_id, answer in sorted(quiz_answers.items())
+    ]
+    
     # Create response with results template
-    response = make_response(render_template('results.html', correct_answers=correct_answers))
+    response = make_response(render_template(
+        'results.html',
+        correct_answers=correct_answers,
+        user_answers=user_answers
+    ))
     
     # Clear the quiz answers cookie
     response.delete_cookie('quiz_answers')
