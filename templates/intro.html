@@ -55,11 +55,7 @@
             <div class="step-counter">1 / 4</div>
             <div class="nav-buttons">
                 <button class="nav-btn prev-btn" disabled>Previous</button>
-                {% if current_step == 4 %}
-                <a href="/techniques" class="nav-btn next-btn">EQ Techniques</a>
-                {% else %}
-                <button class="nav-btn next-btn">Next</button>
-                {% endif %}
+                <a href="/techniques" class="nav-btn next-btn">Next</a>
             </div>
         </div>
     </div>
@@ -128,7 +124,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         prevBtn.disabled = currentStep === 1;
-        nextBtn.textContent = currentStep === steps.length ? 'Finish' : 'Next';
+        
+        if (currentStep === steps.length) {
+            nextBtn.textContent = 'EQ Techniques';
+            nextBtn.href = '/techniques';
+            nextBtn.onclick = null;
+        } else {
+            nextBtn.textContent = 'Next';
+            nextBtn.href = '#';
+            nextBtn.onclick = function(e) {
+                e.preventDefault();
+                currentStep++;
+                updateSteps();
+            };
+        }
     }
 
     prevBtn.addEventListener('click', () => {
@@ -138,14 +147,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    nextBtn.addEventListener('click', () => {
-        if (currentStep < steps.length) {
-            currentStep++;
-            updateSteps();
-        } else {
-            window.location.href = '/techniques';
-        }
-    });
+    // Initialize first step
+    updateSteps();
 });
 </script>
 {% endblock %} 
