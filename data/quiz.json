@@ -53,7 +53,7 @@
     },
     {
         "id": 5,
-        "question": "Create a low pass filter at 1000 Hz by adjusting the EQ sliders",
+        "question": "Create a low pass filter at 1000 kHz by adjusting the EQ sliders",
         "type": "slider",
         "frequencies": [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000],
         "correct_threshold": -10,
