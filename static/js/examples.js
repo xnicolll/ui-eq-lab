@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const highPassSlider = document.getElementById('high-pass');
     const lowPassSlider = document.getElementById('low-pass');
     
-    // Audio context and nodes
     let audioContext;
     let source;
     let gainNode;
@@ -16,13 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let lowPassFilter;
     let isAudioSetup = false;
     
-    // Initialize audio context and nodes
     function initAudioContext() {
         if (!audioContext || audioContext.state === 'closed') {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             gainNode = audioContext.createGain();
             
-            // Create high and low pass filters
             highPassFilter = audioContext.createBiquadFilter();
             highPassFilter.type = 'highpass';
             highPassFilter.frequency.value = 20;
@@ -33,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
             lowPassFilter.frequency.value = 20000;
             lowPassFilter.Q.value = 1;
             
-            // Create EQ filters
             const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
             filters = [];
             frequencies.forEach(freq => {
@@ -45,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 filters.push(filter);
             });
             
-            // Connect all filters in series
             highPassFilter.connect(lowPassFilter);
             filters.reduce((prev, curr) => {
                 prev.connect(curr);
@@ -56,61 +51,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Handle track selection
     trackButtons.forEach(button => {
         button.addEventListener('click', function() {
             const track = this.dataset.track;
             const audioFile = track === 'tylerthecreator' ? 'tylerthecreator_normal_full.mp3' : 'fredagain_normal.mp3';
             
-            // Initialize audio context if not already done
             if (!audioContext) {
                 initAudioContext();
             }
             
-            // Create new source node
             if (source) {
                 source.disconnect();
             }
             source = audioContext.createMediaElementSource(audioPlayer);
             
-            // Connect source to filter chain
             source.connect(highPassFilter);
             
-            // Set audio source and play
             audioPlayer.src = `/static/audio/${audioFile}`;
             audioPlayer.load();
             audioPlayer.play();
         });
     });
     
-    // Handle file upload
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             const url = URL.createObjectURL(file);
             
-            // Initialize audio context if not already done
             if (!audioContext) {
                 initAudioContext();
             }
             
-            // Create new source node
             if (source) {
                 source.disconnect();
             }
             source = audioContext.createMediaElementSource(audioPlayer);
             
-            // Connect source to filter chain
             source.connect(highPassFilter);
             
-            // Set audio source and play
             audioPlayer.src = url;
             audioPlayer.load();
             audioPlayer.play();
         }
     });
     
-    // Handle EQ controls
     eqControls.forEach((control, index) => {
         control.addEventListener('input', function() {
             if (filters[index]) {
@@ -119,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Handle presets
     const presets = {
         'flat': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'bass-boost': [6, 4, 2, 0, 0, 0, 0, 0, 0, 0],
@@ -139,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Handle high pass filter
     highPassSlider.addEventListener('input', function() {
         if (highPassFilter) {
             highPassFilter.frequency.value = parseFloat(this.value);
@@ -147,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Handle low pass filter
     lowPassSlider.addEventListener('input', function() {
         if (lowPassFilter) {
             lowPassFilter.frequency.value = parseFloat(this.value);

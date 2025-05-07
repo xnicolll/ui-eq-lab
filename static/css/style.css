@@ -1,4 +1,3 @@
-/* Colors */
 :root {
     --dark: #3a3238;
     --accent: #abaaa5;
@@ -23,7 +22,6 @@ body {
     flex-direction: column;
 }
 
-/* Header and Navigation */
 .header-section {
     background-color: var(--dark);
     height: 33vh;
@@ -84,7 +82,6 @@ body {
     color: var(--dark) !important;
 }
 
-/* Equalizer */
 .equalizer {
     position: absolute;
     bottom: 0;
@@ -113,7 +110,6 @@ body {
     50% { height: 100%; }
 }
 
-/* Content */
 .content-section {
     flex: 1;
     padding: 2rem;
@@ -128,7 +124,6 @@ body {
     align-items: center;
 }
 
-/* Techniques page specific styles */
 .techniques-page .content-section {
     height: 67vh;
     overflow: hidden;
@@ -162,7 +157,6 @@ body {
     margin-top: 0;
 }
 
-/* What is EQ page specific styles */
 .intro-page .content-section {
     height: 67vh;
     overflow: hidden;
@@ -183,7 +177,6 @@ body {
     overflow: hidden;
 }
 
-/* Navigation */
 .navigation-controls {
     position: relative;
     bottom: auto;
@@ -198,7 +191,6 @@ body {
     margin-top: auto;
 }
 
-/* Typography */
 h1, h2, h3, h4 {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
@@ -212,7 +204,6 @@ p {
     margin-bottom: 1rem;
 }
 
-/* Buttons */
 .btn {
     border-radius: 0;
     border: 1px solid var(--dark);
@@ -248,7 +239,6 @@ p {
     border-color: var(--dark);
 }
 
-/* Components */
 .lesson-content, .eq-controls {
     background-color: white;
     padding: 2rem;
@@ -268,7 +258,6 @@ p {
     padding: 2rem;
 }
 
-/* Overview */
 .overview-section {
     text-align: center;
     width: 100%;
@@ -377,7 +366,6 @@ p {
     cursor: pointer;
 }
 
-/* Vertical connecting lines for active items */
 .overview-item.active::after {
     content: '';
     position: absolute;
@@ -389,7 +377,6 @@ p {
     z-index: 0;
 }
 
-/* Learn Section */
 .learn-container {
     padding: 2rem;
     max-width: 800px;
@@ -446,7 +433,6 @@ p {
     font-style: italic;
 }
 
-/* Technique Buttons */
 .technique-buttons {
     display: flex;
     justify-content: center;
@@ -490,7 +476,6 @@ p {
     z-index: 2;
 }
 
-/* Vertical connecting lines for active items */
 .technique-btn.active::after {
     content: '';
     position: absolute;
@@ -527,7 +512,6 @@ p {
     margin: 0.5rem 0;
 }
 
-/* EQ Board */
 .eq-board {
     margin: 2rem auto;
     max-width: 800px;
@@ -627,7 +611,6 @@ p {
     margin-bottom: 1rem;
 }
 
-/* Common slider styles */
 input[type="range"] {
     -webkit-appearance: none;
     background: var(--dark);
@@ -663,13 +646,11 @@ input[type="range"]::-moz-range-track {
     box-shadow: none;
 }
 
-/* Pass filter specific styles */
 .pass-filter input[type="range"] {
     width: 200px;
     height: 4px;
 }
 
-/* EQ slider specific styles */
 .eq-control {
     -webkit-appearance: none;
     width: 150px;
@@ -756,7 +737,6 @@ input[type="range"]::-moz-range-track {
     margin-top: 0.5rem;
 }
 
-/* Header Title */
 .header-title {
     color: var(--light);
     font-size: 1.8rem;
@@ -766,7 +746,6 @@ input[type="range"]::-moz-range-track {
     letter-spacing: 0.1em;
 }
 
-/* Overview Section */
 .overview-title {
     color: var(--dark);
     margin-bottom: 4rem;
@@ -807,7 +786,6 @@ input[type="range"]::-moz-range-track {
     color: var(--light);
 }
 
-/* Quiz Styles */
 .quiz-page {
     display: flex;
     justify-content: center;
@@ -886,7 +864,6 @@ input[type="range"]::-moz-range-track {
     margin-top: 2rem;
 }
 
-/* Modal Styles */
 .modal {
     position: fixed;
     top: 0;
@@ -1121,7 +1098,6 @@ input[type="range"]::-moz-range-track {
     margin-top: 3rem;
 }
 
-/* Song Examples page specific styles */
 .examples-page .content-section {
     padding-top: 1rem;
 }
@@ -1152,7 +1128,6 @@ input[type="range"]::-moz-range-track {
     display: none;
 }
 
-/* Quiz Page Styles */
 .slider-controls {
     margin-top: 2rem;
     text-align: center;

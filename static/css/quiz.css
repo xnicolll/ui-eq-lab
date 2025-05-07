@@ -25,7 +25,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(58, 50, 56, 0.8); /* var(--dark) with opacity */
+    background-color: rgba(58, 50, 56, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +39,7 @@
     max-width: 400px;
     width: 90%;
     text-align: center;
-    border-radius: 0;  /* Square edges */
+    border-radius: 0; 
 }
 
 .modal-content h3 {
@@ -47,7 +47,7 @@
     margin-bottom: 2rem;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    font-size: 1.2rem;  /* Smaller text */
+    font-size: 1.2rem;
 }
 
 .modal-buttons {
@@ -58,11 +58,11 @@
 
 .modal-buttons .nav-btn {
     min-width: 150px;
-    border-radius: 0;  /* Square edges for buttons */
+    border-radius: 0;
 }
 
 #cancel-exit {
-    background-color: var(--light);  /* Same as background */
+    background-color: var(--light); 
     color: var(--dark);
     border: 1px solid var(--dark);
 }

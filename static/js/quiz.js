@@ -9,12 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmBtn = document.getElementById('confirm-exit');
     let destinationUrl = null;
 
-    // Handle slider question if present
     if (document.querySelector('.eq-control')) {
         const sliders = document.querySelectorAll('.eq-control');
         const resetButton = document.querySelector('.reset-btn');
         
-        // Reset button functionality
         resetButton.addEventListener('click', function() {
             sliders.forEach(slider => {
                 slider.value = 0;
@@ -27,10 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 value: parseFloat(slider.value)
             }));
             
-            // Get all slider values for storage
             const sliderValuesArray = sliderValues.map(sv => sv.value);
             
-            // Check if the values create a low pass filter at 1000 Hz
             const isCorrect = sliderValues.every(slider => {
                 if (slider.frequency > 1000) {
                     return slider.value <= correctThreshold;
@@ -38,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             });
             
-            // Store the answer
             fetch('/store_answer', {
                 method: 'POST',
                 headers: {
@@ -62,11 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         });
     } else {
-        // Handle audio comparison question
         const playButtons = document.querySelectorAll('.play-button');
         let currentAudio = null;
 
-        // Handle play button clicks
         playButtons.forEach(button => {
             const audioUrl = button.dataset.audio;
             const audio = new Audio(audioUrl);
@@ -91,14 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Add ended event listener
             audio.addEventListener('ended', function() {
                 button.classList.remove('playing');
                 currentAudio = null;
             });
         });
 
-        // Handle answer selection
         const options = document.querySelectorAll('.option input');
         
         options.forEach(option => {
@@ -107,11 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Handle navigation for multiple choice
         nextButton.addEventListener('click', function() {
             const selectedAnswer = document.querySelector(`input[name="q${questionId}"]:checked`);
             if (selectedAnswer) {
-                // Store the answer
                 fetch('/store_answer', {
                     method: 'POST',
                     headers: {
@@ -137,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle navigation link clicks
     document.querySelectorAll('.nav-link').forEach(link => {
         if (!link.href.includes('/quiz')) {
             link.addEventListener('click', function(e) {
@@ -148,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle modal buttons
     cancelBtn.addEventListener('click', function() {
         modal.style.display = 'none';
         destinationUrl = null;
@@ -162,7 +149,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Close modal if clicked outside
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             modal.style.display = 'none';

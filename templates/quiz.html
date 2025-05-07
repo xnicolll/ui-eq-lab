@@ -67,7 +67,6 @@
     data-correct-threshold="{{ question.correct_threshold }}">
 </div>
 
-<!-- Exit Confirmation Modal -->
 <div class="modal" id="exitConfirmModal" style="display: none;">
     <div class="modal-content">
         <h3>Are you sure you want to exit the quiz?</h3>
@@ -87,7 +86,6 @@
 <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
 {% endblock %}
 
-<!-- Question 2 Template -->
 {% if question_number == 2 %}
 <div class="content-section quiz-page">
     <div class="quiz-container">
@@ -136,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const playButtons = document.querySelectorAll('.play-button');
     let currentAudio = null;
 
-    // Handle play button clicks
     playButtons.forEach(button => {
         const audioUrl = button.dataset.audio;
         const audio = new Audio(audioUrl);
@@ -161,14 +158,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Add ended event listener
         audio.addEventListener('ended', function() {
             button.classList.remove('playing');
             currentAudio = null;
         });
     });
 
-    // Handle answer selection
     const options = document.querySelectorAll('.option input');
     const nextButton = document.querySelector('.next-btn');
     
@@ -178,14 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle navigation
     nextButton.addEventListener('click', function() {
         const selectedAnswer = document.querySelector('input[name="q2"]:checked');
         if (selectedAnswer && selectedAnswer.value === 'high-pass') {
-            // Correct answer
-            window.location.href = '/quiz/3';  // Navigate to next question
+            window.location.href = '/quiz/3';
         } else {
-            // Wrong answer
             alert('Try again!');
         }
     });

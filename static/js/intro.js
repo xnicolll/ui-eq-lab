@@ -7,21 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalSteps = steps.length;
 
     function updateSteps() {
-        // Hide all steps
         steps.forEach(step => {
             step.style.display = 'none';
         });
         
-        // Show current step
         const currentStepElement = document.querySelector(`.learn-step[data-step="${currentStep}"]`);
         if (currentStepElement) {
             currentStepElement.style.display = 'block';
         }
 
-        // Update step counter
         stepCounter.textContent = `${currentStep} / ${totalSteps}`;
 
-        // Update button states
         prevBtn.disabled = currentStep === 1;
         
         if (currentStep === totalSteps) {
@@ -39,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Handle previous button click
     prevBtn.addEventListener('click', () => {
         if (currentStep > 1) {
             currentStep--;
@@ -47,6 +42,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initialize first step
     updateSteps();
 }); 
