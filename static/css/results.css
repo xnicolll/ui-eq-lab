@@ -1,0 +1,80 @@
+.results-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.score {
+    margin: 2rem 0;
+    font-size: 1.2rem;
+}
+
+.score-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark);
+}
+
+.success-message, .retry-message {
+    margin: 2rem 0;
+}
+
+.success-message h3 {
+    color: var(--dark);
+    margin-bottom: 1rem;
+}
+
+.retry-message p {
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+}
+
+.dropdown-toggle {
+    margin: 1rem 0;
+    padding: 0.5rem 1.5rem;
+}
+
+.detailed-results {
+    margin: 1.5rem auto;
+    max-width: 400px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.results-table th,
+.results-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--accent);
+}
+
+.results-table th {
+    background-color: var(--dark);
+    color: var(--light);
+    font-weight: 300;
+}
+
+.results-table td.correct {
+    color: #2ecc71;
+}
+
+.results-table td.incorrect {
+    color: #e74c3c;
+}
+
+.detailed-results {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.detailed-results.show {
+    opacity: 1;
+    max-height: 500px;
+} 

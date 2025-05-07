@@ -1,0 +1,95 @@
+.learn-content {
+    width: 100%;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.frequency-range {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+    gap: 2rem;
+    max-width: 1000px;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+}
+
+.freq-group {
+    flex: 1;
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid var(--dark);
+    background-color: var(--light);
+    min-width: 250px;
+    max-width: 300px;
+    position: relative;
+}
+
+.freq-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.freq-range {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.freq-examples {
+    font-size: 0.9rem;
+    color: var(--dark);
+}
+
+.freq-group::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.freq-group:nth-child(1):hover::after {
+    transform: translate(-50%, -50%) scale(1);
+    background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Bass.jpg');
+    border: 1px solid var(--dark);
+    background-color: var(--light);
+    width: 300px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.freq-group:nth-child(2):hover::after {
+    transform: translate(-50%, -50%) scale(1);
+    background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Midrange.jpg');
+    border: 1px solid var(--dark);
+    background-color: var(--light);
+    width: 300px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.freq-group:nth-child(3):hover::after {
+    transform: translate(-50%, -50%) scale(1);
+    background-image: url('https://storage.googleapis.com/stateless-blog-g4m-co-uk/2023/08/Brilliance.jpg');
+    border: 1px solid var(--dark);
+    background-color: var(--light);
+    width: 300px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+} 

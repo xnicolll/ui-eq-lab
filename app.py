@@ -48,7 +48,6 @@ def quiz_specific(question_id):
     if question_id > len(quiz_data):
         return "Question not found", 404
     
-    # Get answers from cookies
     quiz_answers = get_quiz_answers_from_cookies()
     
     return render_template('quiz.html', 
@@ -60,26 +59,22 @@ def quiz_specific(question_id):
 def store_answer():
     data = request.get_json()
     question_id = str(data.get('question_id'))
-    answer_value = data.get('answer_value')  # Store the actual answer value
+    answer_value = data.get('answer_value')
     is_correct = data.get('is_correct')
     
-    # Get existing answers from cookies
     quiz_answers = get_quiz_answers_from_cookies()
     
-    # Update answers
     quiz_answers[question_id] = {
         'value': answer_value,
         'is_correct': is_correct
     }
     
-    # Create response
     response = make_response(jsonify({
         'status': 'success', 
         'stored_answers': quiz_answers
     }))
     
-    # Set cookie with updated answers
-    response.set_cookie('quiz_answers', json.dumps(quiz_answers), max_age=86400)  # Expires in 24 hours
+    response.set_cookie('quiz_answers', json.dumps(quiz_answers), max_age=86400)
     
     return response
 
@@ -87,10 +82,8 @@ def store_answer():
 def results():
     quiz_answers = get_quiz_answers_from_cookies()
     
-    # Calculate correct answers
     correct_answers = sum(1 for answer in quiz_answers.values() if answer.get('is_correct'))
     
-    # Format answers for the template
     user_answers = [
         {
             'question_id': int(q_id),
@@ -99,14 +92,12 @@ def results():
         for q_id, answer in sorted(quiz_answers.items())
     ]
     
-    # Create response with results template
     response = make_response(render_template(
         'results.html',
         correct_answers=correct_answers,
         user_answers=user_answers
     ))
     
-    # Clear the quiz answers cookie
     response.delete_cookie('quiz_answers')
     
     return response
