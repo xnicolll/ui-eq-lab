@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, lowPassFilter).connect(gainNode);
             
             gainNode.connect(audioContext.destination);
-            isAudioSetup = false;
         }
     }
     
@@ -61,14 +60,25 @@ document.addEventListener('DOMContentLoaded', function() {
     trackButtons.forEach(button => {
         button.addEventListener('click', function() {
             const track = this.dataset.track;
-            // Use the correct file names
             const audioFile = track === 'tylerthecreator' ? 'tylerthecreator_normal_full.mp3' : 'fredagain_normal.mp3';
+            
+            // Initialize audio context if not already done
+            if (!audioContext) {
+                initAudioContext();
+            }
+            
+            // Create new source node
+            if (source) {
+                source.disconnect();
+            }
+            source = audioContext.createMediaElementSource(audioPlayer);
+            
+            // Connect source to filter chain
+            source.connect(highPassFilter);
+            
+            // Set audio source and play
             audioPlayer.src = `/static/audio/${audioFile}`;
             audioPlayer.load();
-            if (!isAudioSetup) {
-                initAudioContext();
-                isAudioSetup = true;
-            }
             audioPlayer.play();
         });
     });
@@ -78,12 +88,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = e.target.files[0];
         if (file) {
             const url = URL.createObjectURL(file);
+            
+            // Initialize audio context if not already done
+            if (!audioContext) {
+                initAudioContext();
+            }
+            
+            // Create new source node
+            if (source) {
+                source.disconnect();
+            }
+            source = audioContext.createMediaElementSource(audioPlayer);
+            
+            // Connect source to filter chain
+            source.connect(highPassFilter);
+            
+            // Set audio source and play
             audioPlayer.src = url;
             audioPlayer.load();
-            if (!isAudioSetup) {
-                initAudioContext();
-                isAudioSetup = true;
-            }
             audioPlayer.play();
         }
     });
