@@ -4,13 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionId = parseInt(quizData.questionId);
     const correctAnswer = quizData.correctAnswer;
     const correctThreshold = parseFloat(quizData.correctThreshold);
+    const modal = document.getElementById('exitConfirmModal');
+    const cancelBtn = document.getElementById('cancel-exit');
+    const confirmBtn = document.getElementById('confirm-exit');
+    let destinationUrl = null;
 
-    // Handle slider question if present
     if (document.querySelector('.eq-control')) {
         const sliders = document.querySelectorAll('.eq-control');
         const resetButton = document.querySelector('.reset-btn');
         
-        // Reset button functionality
         resetButton.addEventListener('click', function() {
             sliders.forEach(slider => {
                 slider.value = 0;
@@ -23,10 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 value: parseFloat(slider.value)
             }));
             
-            // Get all slider values for storage
             const sliderValuesArray = sliderValues.map(sv => sv.value);
             
-            // Check if the values create a low pass filter at 1000 Hz
             const isCorrect = sliderValues.every(slider => {
                 if (slider.frequency > 1000) {
                     return slider.value <= correctThreshold;
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             });
             
-            // Store the answer
             fetch('/store_answer', {
                 method: 'POST',
                 headers: {
@@ -58,11 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         });
     } else {
-        // Handle audio comparison question
         const playButtons = document.querySelectorAll('.play-button');
         let currentAudio = null;
 
-        // Handle play button clicks
         playButtons.forEach(button => {
             const audioUrl = button.dataset.audio;
             const audio = new Audio(audioUrl);
@@ -87,14 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Add ended event listener
             audio.addEventListener('ended', function() {
                 button.classList.remove('playing');
                 currentAudio = null;
             });
         });
 
-        // Handle answer selection
         const options = document.querySelectorAll('.option input');
         
         options.forEach(option => {
@@ -103,11 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Handle navigation for multiple choice
         nextButton.addEventListener('click', function() {
             const selectedAnswer = document.querySelector(`input[name="q${questionId}"]:checked`);
             if (selectedAnswer) {
-                // Store the answer
                 fetch('/store_answer', {
                     method: 'POST',
                     headers: {
@@ -132,4 +125,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (!link.href.includes('/quiz')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                destinationUrl = this.href;
+                modal.style.display = 'flex';
+            });
+        }
+    });
+
+    cancelBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        destinationUrl = null;
+    });
+
+    confirmBtn.addEventListener('click', function() {
+        if (destinationUrl) {
+            window.location.href = destinationUrl;
+        } else {
+            window.history.back();
+        }
+    });
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            destinationUrl = null;
+        }
+    });
 }); 
