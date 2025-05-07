@@ -48,28 +48,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }, lowPassFilter).connect(gainNode);
             
             gainNode.connect(audioContext.destination);
+            isAudioSetup = false;
         }
     }
+
+    function setupAudioSource() {
+        if (source) {
+            source.disconnect();
+        }
+        
+        source = audioContext.createMediaElementSource(audioPlayer);
+        source.connect(highPassFilter);
+        isAudioSetup = true;
+    }
     
+    function changeTrack(trackUrl) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        
+        audioPlayer.src = trackUrl;
+        
+        initAudioContext();
+        
+        if (!isAudioSetup) {
+            setupAudioSource();
+        }
+        
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+    }
+
     trackButtons.forEach(button => {
         button.addEventListener('click', function() {
             const track = this.dataset.track;
-            const audioFile = track === 'tylerthecreator' ? 'tylerthecreator_normal_full.mp3' : 'fredagain_normal.mp3';
+            const trackUrl = track === 'tylerthecreator' ? 
+                '/static/audio/tylerthecreator_normal_full.mp3' : 
+                `/static/audio/${track}_normal.mp3`;
             
-            if (!audioContext) {
-                initAudioContext();
-            }
-            
-            if (source) {
-                source.disconnect();
-            }
-            source = audioContext.createMediaElementSource(audioPlayer);
-            
-            source.connect(highPassFilter);
-            
-            audioPlayer.src = `/static/audio/${audioFile}`;
-            audioPlayer.load();
-            audioPlayer.play();
+            changeTrack(trackUrl);
         });
     });
     
@@ -77,62 +94,55 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = e.target.files[0];
         if (file) {
             const url = URL.createObjectURL(file);
-            
-            if (!audioContext) {
-                initAudioContext();
-            }
-            
-            if (source) {
-                source.disconnect();
-            }
-            source = audioContext.createMediaElementSource(audioPlayer);
-            
-            source.connect(highPassFilter);
-            
-            audioPlayer.src = url;
-            audioPlayer.load();
-            audioPlayer.play();
+            changeTrack(url);
         }
     });
-    
-    eqControls.forEach((control, index) => {
-        control.addEventListener('input', function() {
-            if (filters[index]) {
-                filters[index].gain.value = parseFloat(this.value);
-            }
-        });
+
+    audioPlayer.addEventListener('play', function() {
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
     });
-    
+
+    highPassSlider.addEventListener('input', function() {
+        const freq = parseInt(this.value);
+        if (highPassFilter) {
+            highPassFilter.frequency.value = freq;
+        }
+        this.nextElementSibling.textContent = `${freq} Hz`;
+    });
+
+    lowPassSlider.addEventListener('input', function() {
+        const freq = parseInt(this.value);
+        if (lowPassFilter) {
+            lowPassFilter.frequency.value = freq;
+        }
+        this.nextElementSibling.textContent = `${freq} Hz`;
+    });
+
     const presets = {
-        'flat': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        flat: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'bass-boost': [6, 4, 2, 0, 0, 0, 0, 0, 0, 0],
         'treble-boost': [0, 0, 0, 0, 0, 0, 2, 4, 6, 6],
-        'vocal': [0, 0, 0, 2, 4, 4, 2, 0, 0, 0]
+        vocal: [0, 0, 2, 4, 6, 4, 2, 0, 0, 0]
     };
-    
+
     presetButtons.forEach(button => {
         button.addEventListener('click', function() {
             const preset = presets[this.dataset.preset];
             eqControls.forEach((control, index) => {
                 control.value = preset[index];
-                if (filters[index]) {
-                    filters[index].gain.value = preset[index];
-                }
+                control.dispatchEvent(new Event('input'));
             });
         });
     });
-    
-    highPassSlider.addEventListener('input', function() {
-        if (highPassFilter) {
-            highPassFilter.frequency.value = parseFloat(this.value);
-            this.nextElementSibling.textContent = `${this.value} Hz`;
-        }
-    });
-    
-    lowPassSlider.addEventListener('input', function() {
-        if (lowPassFilter) {
-            lowPassFilter.frequency.value = parseFloat(this.value);
-            this.nextElementSibling.textContent = `${this.value} Hz`;
-        }
+
+    eqControls.forEach((control, index) => {
+        control.addEventListener('input', function() {
+            const gain = parseFloat(this.value);
+            if (filters[index]) {
+                filters[index].gain.value = gain;
+            }
+        });
     });
 }); 
