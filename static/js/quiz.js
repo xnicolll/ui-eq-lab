@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionId = parseInt(quizData.questionId);
     const correctAnswer = quizData.correctAnswer;
     const correctThreshold = parseFloat(quizData.correctThreshold);
+    const modal = document.getElementById('exitConfirmModal');
+    const cancelBtn = document.getElementById('cancel-exit');
+    const confirmBtn = document.getElementById('confirm-exit');
+    let destinationUrl = null;
 
     // Handle slider question if present
     if (document.querySelector('.eq-control')) {
@@ -132,4 +136,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Handle navigation link clicks
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (!link.href.includes('/quiz')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                destinationUrl = this.href;
+                modal.style.display = 'flex';
+            });
+        }
+    });
+
+    // Handle modal buttons
+    cancelBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        destinationUrl = null;
+    });
+
+    confirmBtn.addEventListener('click', function() {
+        if (destinationUrl) {
+            window.location.href = destinationUrl;
+        } else {
+            window.history.back();
+        }
+    });
+
+    // Close modal if clicked outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            destinationUrl = null;
+        }
+    });
 }); 

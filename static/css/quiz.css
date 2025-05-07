@@ -1,0 +1,84 @@
+.slider-controls {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.reset-btn {
+    background: none;
+    border: 1px solid var(--dark);
+    padding: 0.5rem 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--dark);
+}
+
+.reset-btn:hover {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(58, 50, 56, 0.8); /* var(--dark) with opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--light);
+    padding: 2rem;
+    border: 1px solid var(--dark);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    border-radius: 0;  /* Square edges */
+}
+
+.modal-content h3 {
+    color: var(--dark);
+    margin-bottom: 2rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;  /* Smaller text */
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.modal-buttons .nav-btn {
+    min-width: 150px;
+    border-radius: 0;  /* Square edges for buttons */
+}
+
+#cancel-exit {
+    background-color: var(--light);  /* Same as background */
+    color: var(--dark);
+    border: 1px solid var(--dark);
+}
+
+#cancel-exit:hover {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+#confirm-exit {
+    background-color: var(--dark);
+    color: var(--light);
+    border: 1px solid var(--dark);
+}
+
+#confirm-exit:hover {
+    background-color: var(--light);
+    color: var(--dark);
+} 
